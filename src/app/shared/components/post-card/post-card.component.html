@@ -1,9 +1,18 @@
-<div>
+<div class="flex p-6">
     <!-- Avatar -->
     <app-avatar />
 
     <!-- Name -->
     <!-- Username -->
+    <div class="flex">
+        <div>
+            {{name()}}
+        </div>
+        <div>
+            &commat;{{username()}}
+        </div>
+        <p class="">·{{timestamp()}}</p>
+    </div>
 
     <!-- Post text -->
 

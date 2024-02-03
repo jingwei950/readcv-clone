@@ -1,10 +1,17 @@
-<div class="grid grid-cols-3 mx-auto">
+<div class="grid mx-auto" [ngClass]="{
+    'grid-cols-12' : !(screenSize.isWeb$ | async),
+    'grid-cols-3' : screenSize.isWeb$ | async
+}">
     <!-- Navigation -->
-    <app-navigation />
+    <app-navigation class="col-span-1" />
 
     <!-- Posts section -->
-    <app-post-feed />
+    <app-post-feed
+        [ngClass]="{'col-span-1': (screenSize.isWeb$ | async), 'col-span-11': !(screenSize.isWeb$ | async) }" />
 
+
+    @if(screenSize.isWeb$ | async){
     <!-- Job listings -->
     <app-job-listings />
+    }
 </div>

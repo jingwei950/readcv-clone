@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ResponsiveBreakpointService } from '../../services/responsive-breakpoint.service';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [],
   templateUrl: './navigation.component.html',
   styles: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, AsyncPipe],
 })
 export class NavigationComponent {
-
+  screenSize = inject(ResponsiveBreakpointService);
 }

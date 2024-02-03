@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { AvatarComponent } from '../avatar/avatar.component';
 
 @Component({
@@ -9,4 +9,8 @@ import { AvatarComponent } from '../avatar/avatar.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AvatarComponent],
 })
-export class PostCardComponent {}
+export class PostCardComponent {
+  name = signal('Jingwei');
+  username = signal('jingwei950');
+  timestamp = signal('13h');
+}

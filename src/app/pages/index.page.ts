@@ -8,7 +8,6 @@ import { ResponsiveBreakpointService } from '../shared/services/responsive-break
 import { AsyncPipe, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
   standalone: true,
   templateUrl: './index.component.html',
   styles: [],
@@ -22,6 +21,6 @@ import { AsyncPipe, NgClass } from '@angular/common';
     NgClass,
   ],
 })
-export default class HomeComponent {
+export default class HomePageComponent {
   screenSize = inject(ResponsiveBreakpointService);
 }

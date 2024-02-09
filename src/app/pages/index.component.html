@@ -1,17 +1,26 @@
-<div class="grid mx-auto" [ngClass]="{
-    'grid-cols-12' : !(screenSize.isWeb$ | async),
-    'grid-cols-3' : screenSize.isWeb$ | async
-}">
-    <!-- Navigation -->
-    <app-navigation class="col-span-1" />
-
-    <!-- Posts section -->
-    <app-post-feed
-        [ngClass]="{'col-span-1': (screenSize.isWeb$ | async), 'col-span-11': !(screenSize.isWeb$ | async) }" />
-
-
-    @if(screenSize.isWeb$ | async){
-    <!-- Job listings -->
-    <app-job-listings />
+<div class="w-full">
+  <!-- <main
+    class="grid sm:grid-cols-layout-sm lg:grid-cols-layout-lg xl:grid-cols-layout-xl"
+  > -->
+  <main class="flex justify-center mx-auto w-full">
+    @if (!(screenSize.isHandset$ | async)) {
+      <div class="">
+        <!-- Navigation -->
+        <app-navigation />
+      </div>
     }
+
+    <!-- <div class="col-span-4 grid grid-cols-8"> -->
+    <div class="min-w-[420px] lg:max-w-[600px] w-full">
+      <!-- Posts section -->
+      <app-post-feed />
+    </div>
+
+    @if (screenSize.isWeb$ | async) {
+      <div class="max-w-[250px] w-full">
+        <!-- Job listings -->
+        <app-job-listings />
+      </div>
+    }
+  </main>
 </div>

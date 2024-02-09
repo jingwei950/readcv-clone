@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+// Angular imports
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

@@ -1,4 +1,7 @@
+// Angular imports
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+
+// Components
 import { AvatarComponent } from '../avatar/avatar.component';
 
 @Component({

@@ -1,5 +1,8 @@
+// Angular imports
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
+// Services
 import { ResponsiveBreakpointService } from '../../services/responsive-breakpoint.service';
 
 @Component({

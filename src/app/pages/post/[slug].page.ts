@@ -1,7 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+// Angular imports
+import { Component, inject } from '@angular/core';
 import { MarkdownComponent } from '@analogjs/content';
 import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+
+// Rxjs
 import { map } from 'rxjs';
 
 @Component({
@@ -13,6 +16,6 @@ export default class PostComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly post$ = this.route.paramMap.pipe(
-    map((params) => params.get('slug')) //Must be the same "name" as the file name "[slug]"
+    map((params) => params.get('slug')), //Must be the same "name" as the file name "[slug]"
   );
 }

@@ -1,4 +1,7 @@
+// Angular imports
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+// 3rd party imports
 import {
   HlmAvatarComponent,
   HlmAvatarFallbackDirective,
@@ -8,11 +11,7 @@ import {
 @Component({
   selector: 'app-avatar',
   standalone: true,
-  imports: [
-    HlmAvatarImageDirective,
-    HlmAvatarComponent,
-    HlmAvatarFallbackDirective,
-  ],
+  imports: [HlmAvatarImageDirective, HlmAvatarComponent, HlmAvatarFallbackDirective],
   templateUrl: './avatar.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,

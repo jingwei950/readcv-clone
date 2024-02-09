@@ -1,24 +1,18 @@
 <div class="w-full">
-  <!-- <main
-    class="grid sm:grid-cols-layout-sm lg:grid-cols-layout-lg xl:grid-cols-layout-xl"
-  > -->
   <main class="flex justify-center mx-auto w-full">
+    <!-- Navigation -->
     @if (!(screenSize.isHandset$ | async)) {
-      <div class="">
-        <!-- Navigation -->
-        <app-navigation />
-      </div>
+      <app-navigation />
     }
 
-    <!-- <div class="col-span-4 grid grid-cols-8"> -->
+    <!-- Posts section -->
     <div class="min-w-[420px] lg:max-w-[600px] w-full">
-      <!-- Posts section -->
       <app-post-feed />
     </div>
 
+    <!-- Job listings -->
     @if (screenSize.isWeb$ | async) {
       <div class="max-w-[250px] w-full">
-        <!-- Job listings -->
         <app-job-listings />
       </div>
     }

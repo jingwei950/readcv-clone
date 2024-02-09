@@ -1,0 +1,12 @@
+{
+  "printWidth": 140,
+  "overrides": [
+    {
+      "files": "*.ts",
+      "options": {
+        "semi": true,
+        "printWidth": 120
+      }
+    }
+  ]
+}

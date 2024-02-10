@@ -1,8 +1,8 @@
 <div class="w-full h-screen">
-  <main class="flex justify-center mx-auto w-full">
+  <main class="flex justify-center mx-auto w-full max-w-[calc(300px+604px+300px)]">
     <!-- Navigation -->
     @if (!(screenSize.isHandset$ | async)) {
-      <App-navigation />
+      <App-navigation class="flex-1" />
     }
 
     <!-- Posts section -->
@@ -12,7 +12,7 @@
 
     <!-- Job listings -->
     @if (screenSize.isWeb$ | async) {
-      <div class="max-w-[250px] w-full">
+      <div class="max-w-[300px] w-full">
         <App-job-listings />
       </div>
     }

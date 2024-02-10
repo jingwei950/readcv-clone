@@ -1,7 +1,7 @@
-<div class="flex items-start justify-center ml-auto h-screen">
-  <div class="w-16 flex flex-col justify-center items-center">
+<div class="flex items-start justify-center ml-auto">
+  <div class="w-full flex flex-col justify-center items-center">
     @for (icon of iconArray; track $index) {
-      <div class="w-16 h-16 inline-flex items-center justify-center">
+      <div class="w-16 h-16 inline-flex items-center justify-center ml-auto">
         @if (icon.alias === navigationState()) {
           <App-nav-buttons [icon]="icon.icon.solid" [iconRoute]="icon.path" [iconAlias]="icon.alias" (onClick)="changeState($event)" />
         } @else {

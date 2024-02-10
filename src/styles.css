@@ -8,18 +8,18 @@
 @layer base {
   @font-face {
     font-family: "Graphik";
-    src: url("./assets/fonts/GraphikThin.otf") format("truetype")
-        font-weight-thin,
-      url("./assets/fonts/GraphikLight.otf") format("truetype")
-        font-weight-light,
-      url("./assets/fonts/GraphikRegular.otf") format("truetype")
-        font-weight-normal,
-      url("./assets/fonts/GraphikMedium.otf") format("truetype")
-        font-weight-medium,
-      url("./assets/fonts/GraphikSemibold.otf") format("truetype")
-        font-weight-semibold,
+    src:
+      url("./assets/fonts/GraphikThin.otf") format("truetype") font-weight-thin,
+      url("./assets/fonts/GraphikLight.otf") format("truetype") font-weight-light,
+      url("./assets/fonts/GraphikRegular.otf") format("truetype") font-weight-normal,
+      url("./assets/fonts/GraphikMedium.otf") format("truetype") font-weight-medium,
+      url("./assets/fonts/GraphikSemibold.otf") format("truetype") font-weight-semibold,
       url("./assets/fonts/GraphikBold.otf") format("truetype") font-weight-bold;
   }
+}
+
+body {
+  @apply text-sm text-primary bg-[#eee];
 }
 
 :root {

@@ -11,9 +11,10 @@ import { HlmButtonDirective } from '../../../../../spartan-ng-components/ui-butt
 
 // Components
 import { PostCardComponent } from '../post-card/post-card.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
-  selector: 'app-post-feed',
+  selector: 'App-post-feed',
   standalone: true,
   templateUrl: './post-feed.component.html',
   styles: ``,
@@ -22,4 +23,16 @@ import { PostCardComponent } from '../post-card/post-card.component';
 })
 export class PostFeedComponent {
   screenSize = inject(ResponsiveBreakpointService);
+  navService = inject(NavigationService);
+
+  filterButtons = ['highlight', 'everyone'];
+  notiButtons = ['all', 'mentions'];
+
+  changeFilterState(state: string, filterType: string) {
+    if (filterType === 'home') {
+      this.navService.filterState.update(() => state);
+    } else if (filterType === 'notification') {
+      this.navService.notificationFilterState.update(() => state);
+    }
+  }
 }

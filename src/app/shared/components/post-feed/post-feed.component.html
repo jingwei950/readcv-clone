@@ -1,10 +1,68 @@
 <div class="inline-flex justify-center w-full border-x border-[#333] min-h-screen">
   <div class="flex flex-col w-full">
-    <div class="flex w-full border-b border-[#333] justify-center">
-      <button hlmBtn variant="link" class="font-bold">Highlight</button>
-      <button hlmBtn variant="link">Everyone</button>
+    <div
+      class="flex w-full border-b border-[#333] items-center min-h-16 px-6"
+      [ngClass]="navService.navState() === 'msg' || navService.navState() === 'bookmark' ? 'justify-start' : 'justify-center'"
+    >
+      @if (navService.navState() === "home") {
+        @for (button of filterButtons; track $index) {
+          <button
+            hlmBtn
+            variant="link"
+            (click)="changeFilterState(button === 'highlight' ? 'highlight' : 'everyone', 'home')"
+            class="capitalize"
+            [ngClass]="{ '!text-gray-500': navService.filterState() !== button }"
+          >
+            {{ button }}
+          </button>
+        }
+      } @else if (navService.navState() === "noti") {
+        @for (button of notiButtons; track $index) {
+          <button
+            hlmBtn
+            variant="link"
+            (click)="changeFilterState(button === 'all' ? 'all' : 'mentions', 'notification')"
+            class="capitalize"
+            [ngClass]="{ '!text-gray-500': navService.notificationFilterState() !== button }"
+          >
+            {{ button }}
+          </button>
+        }
+      } @else if (navService.navState() === "msg") {
+        <p class="font-medium text-sm text-primary">Replies</p>
+      } @else if (navService.navState() === "bookmark") {
+        <p class="font-medium text-sm text-primary">Bookmarks</p>
+      }
     </div>
 
-    <app-post-card />
+    @switch (navService.navState()) {
+      @case ("home") {
+        @if (navService.filterState() === "highlight") {
+          <p>Highlight</p>
+          <App-post-card />
+        } @else {
+          <p>Everyone</p>
+        }
+      }
+      @case ("noti") {
+        @if (navService.notificationFilterState() === "all") {
+          <p>All</p>
+        } @else {
+          <p>Mentions</p>
+        }
+      }
+      @case ("search") {
+        <p>Search</p>
+      }
+      @case ("msg") {
+        <p>Message</p>
+      }
+      @case ("bookmark") {
+        <p>bookmark</p>
+      }
+      @default {
+        <App-post-card />
+      }
+    }
   </div>
 </div>

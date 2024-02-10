@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { HlmButtonDirective } from '../../../../../spartan-ng-components/ui-button-helm/src';
 
 @Component({
-  selector: 'app-button',
+  selector: 'App-button',
   standalone: true,
   templateUrl: './button.component.html',
   styles: ``,

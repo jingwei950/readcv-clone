@@ -2,7 +2,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-job-listings',
+  selector: 'App-job-listings',
   standalone: true,
   imports: [],
   templateUrl: './job-listings.component.html',

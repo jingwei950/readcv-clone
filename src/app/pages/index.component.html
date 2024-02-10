@@ -1,19 +1,19 @@
-<div class="w-full">
+<div class="w-full h-screen">
   <main class="flex justify-center mx-auto w-full">
     <!-- Navigation -->
     @if (!(screenSize.isHandset$ | async)) {
-      <app-navigation />
+      <App-navigation />
     }
 
     <!-- Posts section -->
     <div class="min-w-[420px] lg:max-w-[600px] w-full">
-      <app-post-feed />
+      <App-post-feed />
     </div>
 
     <!-- Job listings -->
     @if (screenSize.isWeb$ | async) {
       <div class="max-w-[250px] w-full">
-        <app-job-listings />
+        <App-job-listings />
       </div>
     }
   </main>

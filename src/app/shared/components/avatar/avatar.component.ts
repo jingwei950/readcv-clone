@@ -9,7 +9,7 @@ import {
 } from '../../../../../spartan-ng-components/ui-avatar-helm/src';
 
 @Component({
-  selector: 'app-avatar',
+  selector: 'App-avatar',
   standalone: true,
   imports: [HlmAvatarImageDirective, HlmAvatarComponent, HlmAvatarFallbackDirective],
   templateUrl: './avatar.component.html',

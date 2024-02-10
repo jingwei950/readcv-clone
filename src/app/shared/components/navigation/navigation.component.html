@@ -1,18 +1,13 @@
-<div class="flex items-center justify-center ml-auto">
-  <div class="w-[60px] h-[60px] inline-flex justify-center items-center">
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 28 28"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M21.25 23H16v-5.75a1 1 0 00-1-1h-2a1 1 0 00-1 1V23H6.75A1.75 1.75 0 015 21.25v-7.894c0-.94.429-1.83 1.172-2.436l6.838-5.57a1.577 1.577 0 011.98 0l6.838 5.57A3.144 3.144 0 0123 13.356v7.894A1.75 1.75 0 0121.25 23z"
-        fill="#000000"
-      ></path>
-    </svg>
+<div class="flex items-start justify-center ml-auto h-screen">
+  <div class="w-16 flex flex-col justify-center items-center">
+    @for (icon of iconArray; track $index) {
+      <div class="w-16 h-16 inline-flex items-center justify-center">
+        @if (icon.alias === navigationState()) {
+          <App-nav-buttons [icon]="icon.icon.solid" [iconRoute]="icon.path" [iconAlias]="icon.alias" (onClick)="changeState($event)" />
+        } @else {
+          <App-nav-buttons [icon]="icon.icon.outline" [iconRoute]="icon.path" [iconAlias]="icon.alias" (onClick)="changeState($event)" />
+        }
+      </div>
+    }
   </div>
 </div>

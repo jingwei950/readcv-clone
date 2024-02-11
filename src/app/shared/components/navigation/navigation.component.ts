@@ -7,7 +7,7 @@ import { ResponsiveBreakpointService } from '../../services/responsive-breakpoin
 import { NavigationService } from '../../services/navigation.service';
 
 // Models
-import { NavButton } from '../../models/nav-button.model';
+import { NavButton, NavButtonObj } from '../../models/nav-button.model';
 
 // Custom Icons
 import homeIcon from '../../../../assets/SVG/home-icon';
@@ -41,12 +41,12 @@ export class NavigationComponent {
   paperPlaneIcon: NavButton = paperPlaneIcon;
   bookmarkIcon: NavButton = bookmarkIcon;
 
-  iconArray = [
-    { alias: 'home', path: '/', icon: homeIcon },
-    { alias: 'search', path: '/search', icon: searchIcon },
-    { alias: 'noti', path: '/notification', icon: bellIcon },
-    { alias: 'msg', path: '/message', icon: paperPlaneIcon },
-    { alias: 'bookmark', path: '/bookmark', icon: bookmarkIcon },
+  iconArray: NavButtonObj[] = [
+    { name: 'home', alias: 'home', path: '/', icon: this.homeIcon },
+    { name: 'search', alias: 'search', path: '/search', icon: this.searchIcon },
+    { name: 'notifications', alias: 'noti', path: '/notification', icon: this.bellIcon },
+    { name: 'message', alias: 'msg', path: '/message', icon: this.paperPlaneIcon },
+    { name: 'bookmark', alias: 'bookmark', path: '/bookmark', icon: this.bookmarkIcon },
   ];
 
   changeState(e: any) {

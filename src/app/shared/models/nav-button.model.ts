@@ -3,8 +3,22 @@ export interface NavButton {
   outline: string;
 }
 
-export interface NavButtonObj {
+export interface PostButton {
+  light: string;
+  dark: string;
+  solid?: string;
+}
+
+export interface ButtonObj {
+  name: string;
   alias: string;
-  path: string;
+  path?: string;
+}
+
+export interface NavButtonObj extends ButtonObj {
   icon: NavButton;
+}
+
+export interface PostButtonObj extends ButtonObj {
+  icon: PostButton;
 }

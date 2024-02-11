@@ -1,4 +1,5 @@
 @import "@angular/cdk/overlay-prebuilt.css";
+@import "@angular/cdk/a11y-prebuilt.css"; /* Fixes cdk-describedby-message-container not hidden properly */
 
 /* Tailwind directives  */
 @tailwind base;
@@ -19,7 +20,7 @@
 }
 
 body {
-  @apply text-sm text-primary bg-[#eee];
+  @apply text-sm text-primary bg-secondary;
 }
 
 :root {

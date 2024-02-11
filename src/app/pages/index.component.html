@@ -12,7 +12,7 @@
 
     <!-- Job listings -->
     @if (screenSize.isWeb$ | async) {
-      <div class="max-w-[300px] w-full">
+      <div class="max-w-[300px] max-h-screen h-auto w-full sticky top-0">
         <App-job-listings />
       </div>
     }

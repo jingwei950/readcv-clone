@@ -1,19 +1,39 @@
-<div class="flex p-6">
-  <p>Post feed</p>
+<div class="flex gap-3 p-6 border-b border-gray-400">
   <!-- Avatar -->
-  <!-- <app-avatar /> -->
+  <App-avatar />
 
-  <!-- Name -->
-  <!-- Username -->
-  <!-- <div class="flex">
-    <div>
-      {{ name() }}
+  <div class="flex flex-col">
+    <div class="flex">
+      <!-- Name -->
+      <button class="p-0" hlmBtn variant="link">
+        {{ name() }}
+      </button>
+      <!-- Username -->
+      &nbsp;<button class="p-0 text-gray-500" hlmBtn variant="link">&commat;{{ username() }}</button>
+      <span class="inline-flex items-center text-gray-500">&nbsp;·&nbsp;</span>
+      <button hlmBtn variant="link" class="p-0 inline-flex items-center text-gray-500">{{ timestamp() }}</button>
     </div>
-    <div>&commat;{{ username() }}</div>
-    <p class="">·{{ timestamp() }}</p>
-  </div> -->
 
-  <!-- Post text -->
-
-  <!-- Post buttons -->
+    <div class="flex flex-col">
+      <!-- Post text -->
+      <p class="text-gray-700 font-medium">When I throw down in the kitchen, this is what’s up.😌🔥💛🧧🎊🐲🏮</p>
+      <img
+        class="rounded-lg mt-3"
+        src="https://res.cloudinary.com/read-cv/image/upload/c_limit,h_573,w_430/dpr_1.0/v1/1/users/pnYpwJmBf3euN2bUfxGPlYReNVg1/post-fcb15819-74ce-4dcc-80b2-5275d165a38c.jpg?_a=ATO2BAA0"
+        alt=""
+      />
+      <!-- Post buttons -->
+      <div class="mt-4 flex justify-between items-center w-full">
+        @for (icon of postIcons; track $index) {
+          <div class="flex items-center justify-start w-full gap-2">
+            <img [src]="icon.icon.light" alt="" class="" />
+            <p class="">1</p>
+          </div>
+        }
+        <div class="flex items-center justify-start w-full">
+          <img [src]="ellipsisIcon.light" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

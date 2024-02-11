@@ -25,7 +25,7 @@ export class PostFeedComponent {
   screenSize = inject(ResponsiveBreakpointService);
   navService = inject(NavigationService);
 
-  filterButtons = ['highlight', 'everyone'];
+  filterButtons = ['highlights', 'everyone'];
   notiButtons = ['all', 'mentions'];
 
   changeFilterState(state: string, filterType: string) {

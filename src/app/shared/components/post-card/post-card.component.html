@@ -1,38 +1,65 @@
-<div class="flex gap-3 p-6 border-b border-gray-400">
+<div class="flex gap-3 p-6 border-b border-gray-400 hover:bg-accent hover:cursor-pointer">
   <!-- Avatar -->
-  <App-avatar />
+  <App-avatar [avatarUrl]="post().avatar" [name]="post().name" />
 
   <div class="flex flex-col">
     <div class="flex">
       <!-- Name -->
       <button class="p-0" hlmBtn variant="link">
-        {{ name() }}
+        {{ post().name }}
       </button>
       <!-- Username -->
-      &nbsp;<button class="p-0 text-gray-500" hlmBtn variant="link">&commat;{{ username() }}</button>
+      &nbsp;<button class="p-0 text-gray-500" hlmBtn variant="link">&commat;{{ post().username }}</button>
       <span class="inline-flex items-center text-gray-500">&nbsp;·&nbsp;</span>
-      <button hlmBtn variant="link" class="p-0 inline-flex items-center text-gray-500">{{ timestamp() }}</button>
+      <button hlmBtn variant="link" class="p-0 inline-flex items-center text-gray-500">{{ post().timestamp }}</button>
     </div>
 
     <div class="flex flex-col">
       <!-- Post text -->
-      <p class="text-gray-700 font-medium">When I throw down in the kitchen, this is what’s up.😌🔥💛🧧🎊🐲🏮</p>
-      <img
-        class="rounded-lg mt-3"
-        src="https://res.cloudinary.com/read-cv/image/upload/c_limit,h_573,w_430/dpr_1.0/v1/1/users/pnYpwJmBf3euN2bUfxGPlYReNVg1/post-fcb15819-74ce-4dcc-80b2-5275d165a38c.jpg?_a=ATO2BAA0"
-        alt=""
-      />
+      <p class="text-gray-700 font-medium">{{ post().content }}</p>
+
+      @if (post().contentImgUrl) {
+        <img class="rounded-lg mt-3" [src]="post().contentImgUrl" alt="" />
+      }
       <!-- Post buttons -->
       <div class="mt-4 flex justify-between items-center w-full">
         @for (icon of postIcons; track $index) {
           <div class="flex items-center justify-start w-full gap-2">
             <img [src]="icon.icon.light" alt="" class="" />
-            <p class="">1</p>
+
+            @if (
+              (icon.name === "comment" && post().commentCount > 0) ||
+              (icon.name === "repost" && post().repostCount > 0) ||
+              (icon.name === "like" && post().likeCount > 0)
+            ) {
+              <p>
+                {{ icon.name === "comment" ? post().commentCount : icon.name === "repost" ? post().repostCount : post().likeCount }}
+              </p>
+            }
           </div>
         }
-        <div class="flex items-center justify-start w-full">
+
+        <button class="flex items-center justify-start w-full" [brnMenuTriggerFor]="menu">
           <img [src]="ellipsisIcon.light" alt="" />
-        </div>
+        </button>
+
+        <ng-template #menu>
+          <hlm-menu class="w-56">
+            <hlm-menu-group>
+              <button hlmMenuItem (click)="addBookmark()">
+                <span>Add bookmark</span>
+              </button>
+
+              <button hlmMenuItem (click)="copyLink()">
+                <span>Copy link to post</span>
+              </button>
+
+              <button hlmMenuItem>
+                <span class="text-destructive">Report post</span>
+              </button>
+            </hlm-menu-group>
+          </hlm-menu>
+        </ng-template>
       </div>
     </div>
   </div>

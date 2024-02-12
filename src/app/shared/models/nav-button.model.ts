@@ -20,5 +20,8 @@ export interface NavButtonObj extends ButtonObj {
 }
 
 export interface PostButtonObj extends ButtonObj {
+  commentCount?: number;
+  repostCount?: number;
+  likeCount?: number;
   icon: PostButton;
 }

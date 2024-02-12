@@ -1,7 +1,7 @@
 <div class="inline-flex justify-center w-full border-x border-gray-400 min-h-screen">
   <div class="flex flex-col w-full">
     <div
-      class="flex w-full border-b border-gray-400 items-center min-h-16 px-6 sticky top-0 bg-white z-50"
+      class="flex w-full border-b border-gray-400 items-center min-h-16 px-6 sticky top-0 bg-background z-50"
       [ngClass]="navService.navState() === 'msg' || navService.navState() === 'bookmark' ? 'justify-start' : 'justify-center'"
     >
       @if (navService.navState() === "home") {
@@ -38,11 +38,18 @@
     @switch (navService.navState()) {
       @case ("home") {
         @if (navService.filterState() === "highlights") {
-          <p>Highlights</p>
-          <App-post-card />
-          <App-post-card />
+          @for (item of highlightFeed; track $index) {
+            @if (item) {
+              <App-post-card [post]="item" />
+            }
+          }
         } @else {
           <p>Everyone</p>
+          @for (item of highlightFeed; track $index) {
+            @if (item) {
+              <App-post-card [post]="item" />
+            }
+          }
         }
       }
       @case ("noti") {
@@ -62,7 +69,7 @@
         <p>bookmark</p>
       }
       @default {
-        <App-post-card />
+        <!-- <App-post-card /> -->
       }
     }
   </div>

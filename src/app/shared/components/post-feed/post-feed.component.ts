@@ -1,6 +1,6 @@
 // Angular imports
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 // Service
@@ -12,6 +12,7 @@ import { HlmButtonDirective } from '../../../../../spartan-ng-components/ui-butt
 // Components
 import { PostCardComponent } from '../post-card/post-card.component';
 import { NavigationService } from '../../services/navigation.service';
+import { FeedService } from '../../services/feed.service';
 
 @Component({
   selector: 'App-post-feed',
@@ -24,6 +25,9 @@ import { NavigationService } from '../../services/navigation.service';
 export class PostFeedComponent {
   screenSize = inject(ResponsiveBreakpointService);
   navService = inject(NavigationService);
+  feedService = inject(FeedService);
+
+  highlightFeed = this.feedService.highlightFeed;
 
   filterButtons = ['highlights', 'everyone'];
   notiButtons = ['all', 'mentions'];

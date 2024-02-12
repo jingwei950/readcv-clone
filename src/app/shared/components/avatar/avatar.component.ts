@@ -1,5 +1,5 @@
 // Angular imports
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 // 3rd party imports
 import {
@@ -16,4 +16,14 @@ import {
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AvatarComponent {}
+export class AvatarComponent {
+  avatarUrl = input<string>();
+  name = input.required<string>();
+
+  getShortName(fullName: string) {
+    return fullName
+      .split(' ')
+      .map((n) => n[0])
+      .join('');
+  }
+}

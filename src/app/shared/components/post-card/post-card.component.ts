@@ -61,8 +61,6 @@ export class PostCardComponent {
   postIcons?: PostButtonObj[];
 
   ngOnInit() {
-    console.log(this.post());
-
     // Post buttons
     this.postIcons = [
       { name: 'comment', alias: 'comment', commentCount: this.post()?.commentCount, path: '', icon: this.commentIcon },

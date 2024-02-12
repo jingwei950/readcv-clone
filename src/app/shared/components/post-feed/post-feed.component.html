@@ -38,18 +38,13 @@
     @switch (navService.navState()) {
       @case ("home") {
         @if (navService.filterState() === "highlights") {
-          @for (item of highlightFeed; track $index) {
-            @if (item) {
-              <App-post-card [post]="item" />
+          @for (post of allPosts(); track $index) {
+            @if (post) {
+              <App-post-card [post]="post" />
             }
           }
         } @else {
           <p>Everyone</p>
-          @for (item of highlightFeed; track $index) {
-            @if (item) {
-              <App-post-card [post]="item" />
-            }
-          }
         }
       }
       @case ("noti") {

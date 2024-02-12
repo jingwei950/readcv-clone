@@ -1,18 +1,21 @@
 // Angular imports
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AsyncPipe, JsonPipe, NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, WritableSignal, computed, effect, inject, signal } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-// Service
+// Services
 import { ResponsiveBreakpointService } from '../../services/responsive-breakpoint.service';
+import { NavigationService } from '../../services/navigation.service';
+import { FeedService } from '../../services/feed.service';
+
+// Model
+import { Post } from '../../models/post.model';
 
 // 3rd party imports
 import { HlmButtonDirective } from '../../../../../spartan-ng-components/ui-button-helm/src';
 
 // Components
 import { PostCardComponent } from '../post-card/post-card.component';
-import { NavigationService } from '../../services/navigation.service';
-import { FeedService } from '../../services/feed.service';
 
 @Component({
   selector: 'App-post-feed',
@@ -27,10 +30,18 @@ export class PostFeedComponent {
   navService = inject(NavigationService);
   feedService = inject(FeedService);
 
-  highlightFeed = this.feedService.highlightFeed;
+  // highlightFeed = this.feedService.highlightFeed;
 
   filterButtons = ['highlights', 'everyone'];
   notiButtons = ['all', 'mentions'];
+
+  allPosts: WritableSignal<Post[]> = this.feedService.allPosts;
+
+  constructor() {
+    effect(() => {
+      console.log(this.allPosts());
+    });
+  }
 
   changeFilterState(state: string, filterType: string) {
     if (filterType === 'home') {

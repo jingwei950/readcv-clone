@@ -8,6 +8,9 @@ import { AvatarComponent } from '../avatar/avatar.component';
 import { PostButton, PostButtonObj } from '../../models/nav-button.model';
 import { Post } from '../../models/post.model';
 
+// Pipes
+import { DateAsAgoPipe } from '../../pipes/date-as-ago.pipe';
+
 // Icons
 import commentIcon from '../../../../assets/SVG/comment-icon';
 import repostIcon from '../../../../assets/SVG/repost-icon';
@@ -33,6 +36,7 @@ import {
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    DateAsAgoPipe,
     AvatarComponent,
     HlmButtonDirective,
     BrnMenuTriggerDirective,
@@ -45,10 +49,6 @@ import {
   ],
 })
 export class PostCardComponent {
-  nameSignal = signal('Jingwei');
-  usernameSignal = signal('jingwei950');
-  timestampSignal = signal('13h');
-
   // Input
   post = input.required<Post>();
 
@@ -61,6 +61,8 @@ export class PostCardComponent {
   postIcons?: PostButtonObj[];
 
   ngOnInit() {
+    console.log(this.post());
+
     // Post buttons
     this.postIcons = [
       { name: 'comment', alias: 'comment', commentCount: this.post()?.commentCount, path: '', icon: this.commentIcon },

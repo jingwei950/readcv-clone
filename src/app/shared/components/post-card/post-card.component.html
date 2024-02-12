@@ -5,18 +5,20 @@
   <div class="flex flex-col">
     <div class="flex">
       <!-- Name -->
-      <button class="p-0" hlmBtn variant="link">
+      <button class="p-0 font-normal" hlmBtn variant="link">
         {{ post().name }}
       </button>
       <!-- Username -->
-      &nbsp;<button class="p-0 text-gray-500" hlmBtn variant="link">&commat;{{ post().username }}</button>
+      &nbsp;<button class="p-0 text-gray-500 font-normal" hlmBtn variant="link">&commat;{{ post().username }}</button>
       <span class="inline-flex items-center text-gray-500">&nbsp;·&nbsp;</span>
-      <button hlmBtn variant="link" class="p-0 inline-flex items-center text-gray-500">{{ post().timestamp }}</button>
+      <button hlmBtn variant="link" class="p-0 inline-flex items-center text-gray-500 font-normal">
+        {{ post().timestamp.toDate() | momentsAgo }}
+      </button>
     </div>
 
     <div class="flex flex-col">
       <!-- Post text -->
-      <p class="text-gray-700 font-medium">{{ post().content }}</p>
+      <p class="text-gray-700">{{ post().content }}</p>
 
       @if (post().contentImgUrl) {
         <img class="rounded-lg mt-3" [src]="post().contentImgUrl" alt="" />

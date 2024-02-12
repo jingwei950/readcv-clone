@@ -1,11 +1,66 @@
-<div>
-    <!-- Avatar -->
-    <app-avatar />
+<div class="flex gap-3 p-6 border-b border-gray-400 hover:bg-accent hover:cursor-pointer">
+  <!-- Avatar -->
+  <App-avatar [avatarUrl]="post().avatar" [name]="post().name" />
 
-    <!-- Name -->
-    <!-- Username -->
+  <div class="flex flex-col">
+    <div class="flex">
+      <!-- Name -->
+      <button class="p-0" hlmBtn variant="link">
+        {{ post().name }}
+      </button>
+      <!-- Username -->
+      &nbsp;<button class="p-0 text-gray-500" hlmBtn variant="link">&commat;{{ post().username }}</button>
+      <span class="inline-flex items-center text-gray-500">&nbsp;·&nbsp;</span>
+      <button hlmBtn variant="link" class="p-0 inline-flex items-center text-gray-500">{{ post().timestamp }}</button>
+    </div>
 
-    <!-- Post text -->
+    <div class="flex flex-col">
+      <!-- Post text -->
+      <p class="text-gray-700 font-medium">{{ post().content }}</p>
 
-    <!-- Post buttons -->
+      @if (post().contentImgUrl) {
+        <img class="rounded-lg mt-3" [src]="post().contentImgUrl" alt="" />
+      }
+      <!-- Post buttons -->
+      <div class="mt-4 flex justify-between items-center w-full">
+        @for (icon of postIcons; track $index) {
+          <div class="flex items-center justify-start w-full gap-2">
+            <img [src]="icon.icon.light" alt="" class="" />
+
+            @if (
+              (icon.name === "comment" && post().commentCount > 0) ||
+              (icon.name === "repost" && post().repostCount > 0) ||
+              (icon.name === "like" && post().likeCount > 0)
+            ) {
+              <p>
+                {{ icon.name === "comment" ? post().commentCount : icon.name === "repost" ? post().repostCount : post().likeCount }}
+              </p>
+            }
+          </div>
+        }
+
+        <button class="flex items-center justify-start w-full" [brnMenuTriggerFor]="menu">
+          <img [src]="ellipsisIcon.light" alt="" />
+        </button>
+
+        <ng-template #menu>
+          <hlm-menu class="w-56">
+            <hlm-menu-group>
+              <button hlmMenuItem (click)="addBookmark()">
+                <span>Add bookmark</span>
+              </button>
+
+              <button hlmMenuItem (click)="copyLink()">
+                <span>Copy link to post</span>
+              </button>
+
+              <button hlmMenuItem>
+                <span class="text-destructive">Report post</span>
+              </button>
+            </hlm-menu-group>
+          </hlm-menu>
+        </ng-template>
+      </div>
+    </div>
+  </div>
 </div>

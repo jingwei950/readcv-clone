@@ -1,0 +1,7 @@
+const ellipsisIcon = {
+  light:
+    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI2IiBjeT0iMTIiIHI9IjEuNSIgZmlsbD0iIzE4MTgxYiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMS41IiBmaWxsPSIjMTgxODFiIj48L2NpcmNsZT48Y2lyY2xlIGN4PSIxOCIgY3k9IjEyIiByPSIxLjUiIGZpbGw9IiMxODE4MWIiPjwvY2lyY2xlPjwvc3ZnPg==',
+  dark: '',
+};
+
+export default ellipsisIcon;

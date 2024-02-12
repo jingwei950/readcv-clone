@@ -1,0 +1,13 @@
+{
+  "printWidth": 140,
+  "singleQuotes": true,
+  "overrides": [
+    {
+      "files": "*.ts",
+      "options": {
+        "semi": true,
+        "printWidth": 120
+      }
+    }
+  ]
+}

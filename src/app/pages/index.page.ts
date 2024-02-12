@@ -1,22 +1,22 @@
-import { Component } from '@angular/core';
-import { ButtonComponent } from '../shared/components/button/button.component';
+// Angular imports
+import { Component, inject } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { NavigationComponent } from '../shared/components/navigation/navigation.component';
+
+// Services
+import { ResponsiveBreakpointService } from '../shared/services/responsive-breakpoint.service';
+
+// Components
 import { PostFeedComponent } from '../shared/components/post-feed/post-feed.component';
+import { NavigationComponent } from '../shared/components/navigation/navigation.component';
 import { JobListingsComponent } from '../shared/components/job-listings/job-listings.component';
-import { AvatarComponent } from '../shared/components/avatar/avatar.component';
 
 @Component({
-  selector: 'app-home',
   standalone: true,
   templateUrl: './index.component.html',
   styles: [],
-  imports: [
-    NavigationComponent,
-    PostFeedComponent,
-    JobListingsComponent,
-    ButtonComponent,
-    RouterLink,
-  ],
+  imports: [NavigationComponent, PostFeedComponent, JobListingsComponent, RouterLink, AsyncPipe, NgClass],
 })
-export default class HomeComponent {}
+export default class HomePageComponent {
+  screenSize = inject(ResponsiveBreakpointService);
+}

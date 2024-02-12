@@ -1,13 +1,12 @@
+// Angular imports
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-job-listings',
+  selector: 'App-job-listings',
   standalone: true,
   imports: [],
   templateUrl: './job-listings.component.html',
   styles: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JobListingsComponent {
-
-}
+export class JobListingsComponent {}

@@ -1,0 +1,33 @@
+@if (icon().alias === "search") {
+  <hlm-dialog>
+    <hlm-tooltip>
+      <button position="right" brnDialogTrigger hlmTooltipTrigger aria-describedby="{{ icon().name }}">
+        <img [src]="iconType()" />
+      </button>
+      <span *brnTooltipContent class="capitalize">{{ icon().name }}</span>
+    </hlm-tooltip>
+    <hlm-dialog-content *brnDialogContent="let ctx">
+      <hlm-dialog-header>
+        <h3 brnDialogTitle hlm>Edit profile</h3>
+        <p brnDialogDescription hlm>Make changes to your profile here. Click save when you're done.</p>
+      </hlm-dialog-header>
+      <hlm-dialog-footer>
+        <button hlmBtn type="submit">Save changes</button>
+      </hlm-dialog-footer>
+    </hlm-dialog-content>
+  </hlm-dialog>
+} @else {
+  <hlm-tooltip>
+    <button
+      position="right"
+      hlmTooltipTrigger
+      aria-describedby="{{ icon().name }}"
+      (click)="routeTo(icon().alias)"
+      [routerLink]="icon().path"
+    >
+      <img [src]="iconType()" />
+    </button>
+
+    <span *brnTooltipContent class="capitalize">{{ icon().name }}</span>
+  </hlm-tooltip>
+}

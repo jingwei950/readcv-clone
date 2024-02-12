@@ -1,4 +1,4 @@
-<hlm-avatar variant="large">
-    <img src="https://source.unsplash.com/random" alt="spartan logo. Resembling a spartanic shield" hlmAvatarImage />
-    <span class="bg-[#FD005B] text-white" hlmAvatarFallback>JW</span>
+<hlm-avatar variant="medium">
+  <img [src]="avatarUrl()" alt="spartan logo. Resembling a spartanic shield" hlmAvatarImage />
+  <span class="bg-[#FD005B] text-white" hlmAvatarFallback>{{ getShortName(name()) }}</span>
 </hlm-avatar>

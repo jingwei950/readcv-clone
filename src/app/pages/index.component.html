@@ -1,10 +1,20 @@
-<div class="grid grid-cols-3 mx-auto">
+<div class="w-full h-screen">
+  <main class="flex justify-center mx-auto w-full max-w-[calc(300px+604px+300px)]">
     <!-- Navigation -->
-    <app-navigation />
+    @if (!(screenSize.isHandset$ | async)) {
+      <App-navigation class="flex-1" />
+    }
 
     <!-- Posts section -->
-    <app-post-feed />
+    <div class="min-w-[420px] lg:max-w-[600px] w-full">
+      <App-post-feed />
+    </div>
 
     <!-- Job listings -->
-    <app-job-listings />
+    @if (screenSize.isWeb$ | async) {
+      <div class="max-w-[300px] max-h-screen h-auto w-full sticky top-0">
+        <App-job-listings />
+      </div>
+    }
+  </main>
 </div>

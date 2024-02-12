@@ -1,9 +1,12 @@
+// Angular imports
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { HlmButtonDirective } from '../../../../../spartan-ng-components/ui-button-helm/src';
 import { RouterLink } from '@angular/router';
 
+// 3rd party imports
+import { HlmButtonDirective } from '../../../../../spartan-ng-components/ui-button-helm/src';
+
 @Component({
-  selector: 'app-button',
+  selector: 'App-button',
   standalone: true,
   templateUrl: './button.component.html',
   styles: ``,

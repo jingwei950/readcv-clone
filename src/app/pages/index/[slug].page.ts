@@ -1,8 +1,8 @@
 // Angular imports
-import { Component, inject } from '@angular/core';
-import { MarkdownComponent } from '@analogjs/content';
-import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MarkdownComponent } from '@analogjs/content';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 
 // Rxjs
 import { map } from 'rxjs';

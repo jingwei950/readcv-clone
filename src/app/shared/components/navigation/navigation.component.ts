@@ -1,23 +1,30 @@
 // Angular imports
-import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 // Services
-import { ResponsiveBreakpointService } from '../../services/responsive-breakpoint.service';
-import { NavigationService } from '../../services/navigation.service';
+import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
+import { NavigationService } from '@services/navigation.service';
+import { AuthService } from '@services/auth.service';
 
 // Models
-import { NavButton, NavButtonObj } from '../../models/nav-button.model';
+import { NavButton, NavButtonObj } from '@models/nav-button.model';
 
 // Custom Icons
-import homeIcon from '../../../../assets/SVG/home-icon';
-import searchIcon from '../../../../assets/SVG/search-icon';
-import bellIcon from '../../../../assets/SVG/bell-icon';
-import paperPlaneIcon from '../../../../assets/SVG/paper-plane-icon';
-import bookmarkIcon from '../../../../assets/SVG/bookmark-icon';
+import homeIcon from '@svg/home-icon';
+import searchIcon from '@svg/search-icon';
+import bellIcon from '@svg/bell-icon';
+import paperPlaneIcon from '@svg/paper-plane-icon';
+import bookmarkIcon from '@svg/bookmark-icon';
 
 // Components
-import { NavButtonsComponent } from '../nav-buttons/nav-buttons.component';
+import { NavButtonsComponent } from '@components/nav-buttons/nav-buttons.component';
+import { AvatarComponent } from '@components/avatar/avatar.component';
+
+// 3rd party imports
+import { BrnTooltipContentDirective } from '@spartan-ng/ui-tooltip-brain';
+import { HlmTooltipComponent, HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 
 @Component({
   selector: 'App-navigation',
@@ -25,14 +32,25 @@ import { NavButtonsComponent } from '../nav-buttons/nav-buttons.component';
   templateUrl: './navigation.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, AsyncPipe, NavButtonsComponent],
+  imports: [
+    NgClass,
+    AsyncPipe,
+    RouterLink,
+    NavButtonsComponent,
+    AvatarComponent,
+    HlmTooltipComponent,
+    HlmTooltipTriggerDirective,
+    BrnTooltipContentDirective,
+  ],
 })
 export class NavigationComponent {
   // Service
   public screenSize = inject(ResponsiveBreakpointService);
   public navService = inject(NavigationService);
+  public authService = inject(AuthService);
 
   navigationState = this.navService.navState;
+  currentUser = this.authService.auth_user;
 
   // Icons
   homeIcon: NavButton = homeIcon;

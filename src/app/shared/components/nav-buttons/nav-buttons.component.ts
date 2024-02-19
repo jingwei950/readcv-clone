@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, effect, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+// Model
+import { NavButtonObj } from '@models/nav-button.model';
+
 // Spartan-ng imports
-import { HlmButtonDirective } from '../../../../../spartan-ng-components/ui-button-helm/src';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { BrnDialogContentDirective, BrnDialogTriggerDirective } from '@spartan-ng/ui-dialog-brain';
 import {
   HlmDialogComponent,
@@ -11,13 +14,9 @@ import {
   HlmDialogFooterComponent,
   HlmDialogHeaderComponent,
   HlmDialogTitleDirective,
-} from '../../../../../spartan-ng-components/ui-dialog-helm/src';
+} from '@spartan-ng/ui-dialog-helm';
 import { BrnTooltipContentDirective } from '@spartan-ng/ui-tooltip-brain';
-import {
-  HlmTooltipComponent,
-  HlmTooltipTriggerDirective,
-} from '../../../../../spartan-ng-components/ui-tooltip-helm/src';
-import { NavButtonObj } from '../../models/nav-button.model';
+import { HlmTooltipComponent, HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 
 @Component({
   selector: 'App-nav-buttons',
@@ -28,14 +27,14 @@ import { NavButtonObj } from '../../models/nav-button.model';
     HlmDialogTitleDirective,
     BrnDialogContentDirective,
     BrnDialogTriggerDirective,
-    BrnTooltipContentDirective,
-    HlmTooltipTriggerDirective,
     HlmDialogDescriptionDirective,
     HlmDialogComponent,
-    HlmTooltipComponent,
     HlmDialogFooterComponent,
     HlmDialogHeaderComponent,
     HlmDialogContentComponent,
+    BrnTooltipContentDirective,
+    HlmTooltipTriggerDirective,
+    HlmTooltipComponent,
   ],
   templateUrl: './nav-buttons.component.html',
   styles: ``,

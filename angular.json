@@ -27,7 +27,7 @@
           "strict": true
         }
       },
-      "root": "",
+      "root": "./",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
@@ -37,7 +37,8 @@
             "configFile": "vite.config.ts",
             "main": "src/main.ts",
             "outputPath": "dist/client",
-            "tsConfig": "tsconfig.app.json"
+            "tsConfig": "tsconfig.app.json",
+            "assets": ["src/assets"]
           },
           "defaultConfiguration": "production",
           "configurations": {
@@ -55,7 +56,8 @@
           "defaultConfiguration": "development",
           "options": {
             "buildTarget": "my-app:build",
-            "port": 5173
+            "port": 5173,
+            "assets": ["src/assets"]
           },
           "configurations": {
             "development": {

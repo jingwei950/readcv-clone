@@ -1,6 +1,6 @@
 import { Timestamp } from '@angular/fire/firestore';
 
-export interface user {
+export interface User {
   uid: string;
   name: string;
   username: string;

@@ -19,6 +19,7 @@ export interface NavButtonObj extends ButtonObj {
   icon: NavButton;
 }
 
+// TODO: Change name to "PostReactionButtonObj"
 export interface PostButtonObj extends ButtonObj {
   commentCount?: number;
   repostCount?: number;

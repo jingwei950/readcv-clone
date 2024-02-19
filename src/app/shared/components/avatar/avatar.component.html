@@ -1,4 +1,5 @@
-<hlm-avatar variant="medium">
-  <img [src]="avatarUrl()" alt="spartan logo. Resembling a spartanic shield" hlmAvatarImage />
-  <span class="bg-[#FD005B] text-white" hlmAvatarFallback>{{ getShortName(name()) }}</span>
+<hlm-avatar [variant]="buttonVariant()">
+    {{ avatarUrl() | json }}
+    <img referrerpolicy="no-referrer" [src]="avatarUrl()" alt="" hlmAvatarImage />
+    <span class="bg-[#FD005B] text-white" hlmAvatarFallback>{{ getShortName(name()) }}</span>
 </hlm-avatar>

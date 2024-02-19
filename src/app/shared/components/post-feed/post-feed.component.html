@@ -34,6 +34,17 @@
         <p class="font-medium text-sm text-primary">Bookmarks</p>
       }
     </div>
+    @if (currentUser()) {
+      <div class="flex items-center gap-3 px-6 py-5 border-b border-gray-400 min-h-32">
+        <App-avatar buttonVariant="large" [name]="currentUser()?.displayName!" [avatarUrl]="currentUser()?.photoURL" />
+        <textarea
+          #textarea
+          type="text"
+          class="flex-1 !ring-0 w-full px-4 py-2 !outline-none resize-none h-fit min-h-fit"
+          placeholder="What's on your mind..."
+        ></textarea>
+      </div>
+    }
 
     @switch (navService.navState()) {
       @case ("home") {

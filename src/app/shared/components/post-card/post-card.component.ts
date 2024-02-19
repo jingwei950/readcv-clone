@@ -1,24 +1,24 @@
 // Angular imports
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 // Components
-import { AvatarComponent } from '../avatar/avatar.component';
+import { AvatarComponent } from '@components/avatar/avatar.component';
 
 // Models
-import { PostButton, PostButtonObj } from '../../models/nav-button.model';
-import { Post } from '../../models/post.model';
+import { PostButton, PostButtonObj } from '@models/nav-button.model';
+import { Post } from '@models/post.model';
 
 // Pipes
-import { DateAsAgoPipe } from '../../pipes/date-as-ago.pipe';
+import { DateAsAgoPipe } from '@pipes/date-as-ago.pipe';
 
 // Icons
-import commentIcon from '../../../../assets/SVG/comment-icon';
-import repostIcon from '../../../../assets/SVG/repost-icon';
-import heartIcon from '../../../../assets/SVG/heart-icon';
-import ellipsisIcon from '../../../../assets/SVG/ellipsis-icon';
+import commentIcon from '@svg/comment-icon';
+import repostIcon from '@svg/repost-icon';
+import heartIcon from '@svg/heart-icon';
+import ellipsisIcon from '@svg/ellipsis-icon';
 
 // Spartan-ng imports
-import { HlmButtonDirective } from '../../../../../spartan-ng-components/ui-button-helm/src';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain';
 import {
   HlmMenuComponent,
@@ -27,7 +27,7 @@ import {
   HlmMenuGroupComponent,
   HlmMenuItemSubIndicatorComponent,
   HlmSubMenuComponent,
-} from '../../../../../spartan-ng-components/ui-menu-helm/src';
+} from '@spartan-ng/ui-menu-helm';
 
 @Component({
   selector: 'App-post-card',

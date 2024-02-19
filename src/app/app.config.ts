@@ -1,5 +1,5 @@
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, InjectionToken, importProvidersFrom } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideFileRouter } from '@analogjs/router';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';

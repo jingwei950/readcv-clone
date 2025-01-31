@@ -1,55 +1,28 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import {
+  hlmBlockquote,
+  hlmH1,
+  hlmH2,
+  hlmH3,
+  hlmLead,
+  hlmP,
+  hlmUl,
+} from '@spartan-ng/ui-typography-helm';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [HlmButtonDirective],
   template: `
-    <div>
-      <a href="https://analogjs.org/" target="_blank">
-        <img alt="Analog Logo" class="logo analog" src="/analog.svg" />
-      </a>
-    </div>
+    <button hlmBtn>Button</button>
 
-    <h2>Analog</h2>
-
-    <h3>The fullstack meta-framework for Angular!</h3>
-
-    <div class="card">
-      <button type="button" (click)="increment()">Count {{ count() }}</button>
-    </div>
-
-    <p class="read-the-docs">
-      <a href="https://analogjs.org" target="_blank">Docs</a> |
-      <a href="https://github.com/analogjs/analog" target="_blank">GitHub</a> |
-      <a href="https://github.com/sponsors/brandonroberts" target="_blank">
-        Sponsor
-      </a>
+    <p class="${hlmP} mt-4">
+      Once upon a time, in a far-off land, there was a very lazy king who spent
+      all day lounging on his throne. One day, his advisors came to him with a
+      problem: the kingdom was running out of money.
     </p>
   `,
-  styles: `
-    .logo {
-      will-change: filter;
-    }
-
-    .logo:hover {
-      filter: drop-shadow(0 0 2em #646cffaa);
-    }
-
-    .read-the-docs > * {
-      color: #fff;
-    }
-
-    @media (prefers-color-scheme: light) {
-      .read-the-docs > * {
-        color: #213547;
-      }
-    }
-  `,
 })
-export default class HomeComponent {
-  count = signal(0);
-
-  increment() {
-    this.count.update((count) => count + 1);
-  }
-}
+export default class HomeComponent {}

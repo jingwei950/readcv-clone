@@ -5,7 +5,29 @@
   "projects": {
     "my-app": {
       "projectType": "application",
-      "root": ".",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "standalone": true,
+          "skipTests": true,
+          "inlineStyle": true,
+          "prefix": "App",
+          "changeDetection": "OnPush"
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "./",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {

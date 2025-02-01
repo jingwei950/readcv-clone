@@ -11,6 +11,7 @@
           "standalone": true,
           "skipTests": true,
           "inlineStyle": true,
+          "inlineTemplate": true,
           "prefix": "App",
           "changeDetection": "OnPush"
         },

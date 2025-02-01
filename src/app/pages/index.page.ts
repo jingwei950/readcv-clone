@@ -1,51 +1,36 @@
 // Angular imports
-import { AsyncPipe, NgClass } from '@angular/common';
 import {
-  Component,
-  ElementRef,
-  ViewChild,
-  effect,
-  inject,
-} from '@angular/core';
-import {
-  FormBuilder,
   FormGroup,
-  ReactiveFormsModule,
   Validators,
+  FormBuilder,
+  ReactiveFormsModule,
 } from '@angular/forms';
-
-// Services
-import { UserService } from '@services/user.service';
-import { AuthService } from '@services/auth.service';
-import { DialogStateService } from '@services/dialog-state.service';
-import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
-
-// Components
-import { PostFeedComponent } from '@components/post-feed/post-feed.component';
-import { NavigationComponent } from '@components/navigation/navigation.component';
-import { JobListingsComponent } from '@components/job-listings/job-listings.component';
-
 import {
   BrnDialogContentDirective,
   BrnDialogTriggerDirective,
-  BrnDialogCloseDirective,
-} from '@spartan-ng/ui-dialog-brain';
+} from '@spartan-ng/brain/dialog';
 import {
   HlmDialogComponent,
-  HlmDialogTitleDirective,
   HlmDialogFooterComponent,
   HlmDialogHeaderComponent,
   HlmDialogContentComponent,
-  HlmDialogDescriptionDirective,
 } from '@spartan-ng/ui-dialog-helm';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { UserService } from '@services/user.service';
+import { AuthService } from '@services/auth.service';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { DialogStateService } from '@services/dialog-state.service';
+import { inject, Component, ViewChild, ElementRef } from '@angular/core';
+import { PostFeedComponent } from '@components/post-feed/post-feed.component';
+import { NavigationComponent } from '@components/navigation/navigation.component';
+import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
+import { JobListingsComponent } from '@components/job-listings/job-listings.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    NgClass,
     AsyncPipe,
     PostFeedComponent,
     HlmInputDirective,
@@ -54,14 +39,11 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
     ReactiveFormsModule,
     NavigationComponent,
     JobListingsComponent,
-    BrnDialogCloseDirective,
-    HlmDialogTitleDirective,
     HlmDialogFooterComponent,
     HlmDialogHeaderComponent,
     HlmDialogContentComponent,
     BrnDialogContentDirective,
     BrnDialogTriggerDirective,
-    HlmDialogDescriptionDirective,
   ],
   template: `<div class="w-full h-screen">
     <main

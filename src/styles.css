@@ -1,4 +1,5 @@
 @import "@angular/cdk/overlay-prebuilt.css";
+@import "@angular/cdk/text-field-prebuilt.css";
 
 /* Tailwind directives  */
 @tailwind base;

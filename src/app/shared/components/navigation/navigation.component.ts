@@ -4,9 +4,6 @@ import {
   signal,
   Component,
   viewChild,
-  ViewChild,
-  ElementRef,
-  SimpleChanges,
   ChangeDetectionStrategy,
 } from '@angular/core';
 import {
@@ -24,8 +21,10 @@ import {
   HlmDialogHeaderComponent,
   HlmDialogContentComponent,
 } from '@spartan-ng/ui-dialog-helm';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@services/auth.service';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { imageIcon, plusIcon } from '@components/svg-icon/icons';
 import { NavigationService } from '@services/navigation.service';
@@ -34,6 +33,7 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
 import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
 import { NavButtonsComponent } from '@components/nav-buttons/nav-buttons.component';
 import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
+import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
 
 @Component({
   selector: 'App-navigation',
@@ -41,6 +41,8 @@ import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.ser
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
+    FormsModule,
+    TextFieldModule,
     AvatarComponent,
     SvgIconComponent,
     HlmButtonDirective,
@@ -110,13 +112,23 @@ import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.ser
             <hlm-dialog-content
               #textareaContainer
               *brnDialogContent="let ctx"
-              class="sm:min-w-[480px] sm:min-h-[168px] !w-full"
+              class="sm:min-w-[480px] sm:min-h-[168px] max-h-screen !w-full"
             >
-              <hlm-dialog-header [style]="'height:' + textareaElScrollHeight()">
-                <h3 brnDialogTitle hlm>Anyone can reply</h3>
+              <hlm-dialog-header>
+                <p
+                  class="${hlmSmall} text-muted-foreground antialiased"
+                  brnDialogTitle
+                  hlm
+                >
+                  Anyone can reply
+                </p>
                 <textarea
                   #textarea
-                  class="inline-flex flex-1 max-h-screen min-h-0 grow overflow-hidden resize-none outline-0 ring-0 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-0 h-96 w-full"
+                  cdkTextareaAutosize
+                  cdkAutosizeMaxRows="35"
+                  #autosize="cdkTextareaAutosize"
+                  [(ngModel)]="textareaValue"
+                  class="max-h-screen focus:outline-none"
                   type="text"
                   placeholder="What's on your mind?"
                 ></textarea>
@@ -133,7 +145,12 @@ import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.ser
                     >
                       Cancel
                     </button>
-                    <button hlmBtn type="submit" class="py-0 px-3 !h-8">
+                    <button
+                      hlmBtn
+                      [disabled]="textareaValue().length === 0 ? true : false"
+                      type="submit"
+                      class="py-0 px-3 !h-8"
+                    >
                       Post
                     </button>
                   </div>
@@ -157,31 +174,11 @@ export class NavigationComponent {
   navigationIconState = this.navService.iconState;
 
   viewchildDialogRef = viewChild(BrnDialogComponent);
-  textareaEl = viewChild<ElementRef>('textarea');
-  textareaContainerEl = viewChild<
-    HlmDialogHeaderComponent,
-    ElementRef<HlmDialogHeaderComponent>
-  >(HlmDialogHeaderComponent, { read: ElementRef });
 
   plusIcon = plusIcon;
   imageIcon = imageIcon;
 
-  textareaElScrollHeight = signal<string>('');
-
-  @ViewChild('textarea', { static: false }) myElementRef!: ElementRef;
-
-  desiredHeight: number = 200; // Set your desired height in pixels
-
-  ngAfterViewInit() {
-    if (this.myElementRef) {
-      console.log(this.myElementRef);
-      this.myElementRef.nativeElement.style.height = `${this.desiredHeight}px`;
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-  }
+  textareaValue = signal<string>('');
 
   closeDialog() {
     this.viewchildDialogRef()?.close({});

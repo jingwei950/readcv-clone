@@ -113,24 +113,20 @@ import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.ser
   `,
 })
 export class PostFeedComponent {
-  screenSize = inject(ResponsiveBreakpointService);
-  navService = inject(NavigationService);
   feedService = inject(FeedService);
   authService = inject(AuthService);
+  navService = inject(NavigationService);
+  screenSize = inject(ResponsiveBreakpointService);
 
   @ViewChild('textarea') textareaRef?: ElementRef;
 
-  filterButtons = ['highlights', 'everyone'];
   notiButtons = ['all', 'mentions'];
+  filterButtons = ['highlights', 'everyone'];
 
   allPosts: WritableSignal<Post[]> = this.feedService.allPosts;
   currentUser = this.authService.auth_user;
 
   constructor() {
-    // effect(() => {
-    //   console.log(this.allPosts());
-    // });
-
     effect(() => {
       this.textareaRef?.nativeElement.addEventListener('input', () => {
         this.textareaRef!.nativeElement.style.height = 'auto';
@@ -138,8 +134,6 @@ export class PostFeedComponent {
       });
     });
   }
-
-  ngAfterViewInit() {}
 
   changeFilterState(state: string, filterType: string) {
     if (filterType === 'home') {

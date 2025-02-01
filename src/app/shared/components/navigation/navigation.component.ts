@@ -1,30 +1,16 @@
 // Angular imports
-import { RouterLink } from '@angular/router';
-import { NgClass } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  SimpleChanges,
-  ViewChild,
   inject,
   signal,
+  Component,
   viewChild,
-  viewChildren,
+  ViewChild,
+  ElementRef,
+  SimpleChanges,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-
-// Services
-import { AuthService } from '@services/auth.service';
-import { NavigationService } from '@services/navigation.service';
-import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
-
-// Components
-import { AvatarComponent } from '@components/avatar/avatar.component';
-import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
-import { NavButtonsComponent } from '@components/nav-buttons/nav-buttons.component';
-
-// 3rd party imports
 import {
+  BrnDialogComponent,
   BrnDialogContentDirective,
   BrnDialogTriggerDirective,
 } from '@spartan-ng/brain/dialog';
@@ -34,21 +20,25 @@ import {
 } from '@spartan-ng/ui-tooltip-helm';
 import {
   HlmDialogComponent,
-  HlmDialogTitleDirective,
   HlmDialogFooterComponent,
   HlmDialogHeaderComponent,
   HlmDialogContentComponent,
 } from '@spartan-ng/ui-dialog-helm';
-import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '@services/auth.service';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { imageIcon, plusIcon } from '@components/svg-icon/icons';
+import { NavigationService } from '@services/navigation.service';
+import { AvatarComponent } from '@components/avatar/avatar.component';
 import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
+import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
+import { NavButtonsComponent } from '@components/nav-buttons/nav-buttons.component';
+import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
 
 @Component({
   selector: 'App-navigation',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-
   imports: [
     RouterLink,
     AvatarComponent,
@@ -135,7 +125,14 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
                 <div class="flex justify-between items-end w-full">
                   <App-svg-icon [icon]="imageIcon" icon_class="w-7 h-7" />
                   <div>
-                    <button hlmBtn variant="link" class="h-8">Cancel</button>
+                    <button
+                      hlmBtn
+                      variant="link"
+                      class="h-8"
+                      (click)="closeDialog()"
+                    >
+                      Cancel
+                    </button>
                     <button hlmBtn type="submit" class="py-0 px-3 !h-8">
                       Post
                     </button>
@@ -151,7 +148,6 @@ import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
   `,
 })
 export class NavigationComponent {
-  // Service
   public authService = inject(AuthService);
   public navService = inject(NavigationService);
   public screenSize = inject(ResponsiveBreakpointService);
@@ -160,13 +156,12 @@ export class NavigationComponent {
   currentUser = this.authService.auth_user;
   navigationIconState = this.navService.iconState;
 
+  viewchildDialogRef = viewChild(BrnDialogComponent);
   textareaEl = viewChild<ElementRef>('textarea');
   textareaContainerEl = viewChild<
     HlmDialogHeaderComponent,
     ElementRef<HlmDialogHeaderComponent>
   >(HlmDialogHeaderComponent, { read: ElementRef });
-
-  // @ViewChild('textareaEl') textareaEl?: ElementRef;
 
   plusIcon = plusIcon;
   imageIcon = imageIcon;
@@ -184,49 +179,12 @@ export class NavigationComponent {
     }
   }
 
-  // textareaEle = computed(() => {
-  //   const textareaElement = this.textareaEl()?.nativeElement;
-  //   if (textareaElement) {
-  //     textareaElement.style.height = 'auto';
-  //     textareaElement.style.height = `${textareaElement.scrollHeight}px`;
-  //     console.log(textareaElement.style.height);
-  //     return textareaElement.style.height;
-  //   }
-  // });
-
-  constructor() {
-    // effect(() => {
-    // console.log(this.textareaEle());
-    // const textareaElement = this.textareaEl()?.nativeElement;
-    // if (textareaElement) {
-    //   textareaElement.style.height = 'auto';
-    //   textareaElement.style.height = `${textareaElement.scrollHeight}px`;
-    //   // this.textareaElScrollHeight.set(`${textareaElement.scrollHeight}px`);
-    //   // console.log(textareaElement.style.height);
-    //   // console.log(textareaContainerElement?.style.height);
-    // }
-    // console.log(textareaElement.scrollHeight);
-    // });
-  }
-
-  // ngOnInit() {
-  //   console.log(this.textareaEl);
-  // }
-
-  // ngAfterViewInit() {
-  // setTimeout(() => {
-  //   console.log(this.textareaEl);
-  // }, 2000);
-  // const textareaElement = this.textareaEl();
-  // if (textareaElement && textareaElement.nativeElement) {
-  // console.log(textareaElement);
-  //   textareaElement.nativeElement.style.height = '0';
-  //   textareaElement.nativeElement.style.height = `${textareaElement.nativeElement.scrollHeight}px`;
-  // }
-  // }
-
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
+  }
+
+  closeDialog() {
+    this.viewchildDialogRef()?.close({});
   }
 
   changeState(e: any) {

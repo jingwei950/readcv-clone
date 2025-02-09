@@ -14,7 +14,7 @@ import { ChangeDetectionStrategy, Component, input, model, signal } from '@angul
   imports: [NgClass, FormsModule, AvatarComponent, TextFieldModule, HlmButtonModule, SvgIconComponent],
   template: `
     <div
-      class="flex gap-3 px-6 py-5 border-b border-gray-400 max-h-screen"
+      class="flex gap-3 px-6 py-5 border-b border-gray-300 dark:border-primaryBorderColor max-h-screen"
       [ngClass]="textareaFocusState() ? 'items-start' : 'items-center'"
     >
       <App-avatar buttonVariant="medium" [name]="currentUser().displayName!" [avatarUrl]="currentUser().photoURL" />
@@ -33,7 +33,7 @@ import { ChangeDetectionStrategy, Component, input, model, signal } from '@angul
           [(ngModel)]="textareaValue"
           (focus)="onFocusEvent($event)"
           placeholder="What's on your mind..."
-          class="max-h-screen focus:outline-none w-full"
+          class="max-h-screen focus:outline-none w-full placeholder:text-base dark:bg-background"
         ></textarea>
 
         @if (textareaFocusState()) {

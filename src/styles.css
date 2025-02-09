@@ -1,10 +1,20 @@
 @import "@angular/cdk/overlay-prebuilt.css";
 @import "@angular/cdk/text-field-prebuilt.css";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Tailwind directives  */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply font-sans text-sm dark:text-primary antialiased bg-background;
+}
+
+p {
+  @apply text-grey2 dark:text-grey2;
+}
 
 :root {
   --font-sans: "Graphik";
@@ -24,21 +34,25 @@
   --accent-foreground: 240 5.9% 10%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
+  --warning: 42, 62%, 25%;
+  --warning-foreground: 43, 94%, 49%;
   --border: 240 5.9% 90%;
   --input: 240 5.9% 90%;
   --ring: 240 5.9% 10%;
   --radius: 0.5rem;
+  --primaryBorderColor: 0 0% 20%;
+  --secondaryBorderColor: 0 0% 20%;
   color-scheme: light;
 }
 
 .dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
+  --background: 0 0% 13%;
+  --foreground: 0 0% 20%;
   --card: 240 10% 3.9%;
   --card-foreground: 0 0% 98%;
   --popover: 240 10% 3.9%;
   --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
+  --primary: 0 0% 73%;
   --primary-foreground: 240 5.9% 10%;
   --secondary: 240 3.7% 15.9%;
   --secondary-foreground: 0 0% 98%;
@@ -51,6 +65,12 @@
   --border: 240 3.7% 15.9%;
   --input: 240 3.7% 15.9%;
   --ring: 240 4.9% 83.9%;
+  --primaryBorderColor: 0 0% 20%;
+  --secondaryBorderColor: 0 0% 20%;
+  --transparentBorder: 0 0% 100%;
+  --grey1: 0 0% 93%;
+  --grey2: 0 0% 73%;
+  --grey3: 0 0% 53%;
   color-scheme: dark;
 }
 
@@ -61,16 +81,12 @@
 
   @font-face {
     font-family: "Graphik";
-    src: url("./assets/fonts/GraphikThin.otf") format("truetype")
-        font-weight-thin,
-      url("./assets/fonts/GraphikLight.otf") format("truetype")
-        font-weight-light,
-      url("./assets/fonts/GraphikRegular.otf") format("truetype")
-        font-weight-normal,
-      url("./assets/fonts/GraphikMedium.otf") format("truetype")
-        font-weight-medium,
-      url("./assets/fonts/GraphikSemibold.otf") format("truetype")
-        font-weight-semibold,
+    src:
+      url("./assets/fonts/GraphikThin.otf") format("truetype") font-weight-thin,
+      url("./assets/fonts/GraphikLight.otf") format("truetype") font-weight-light,
+      url("./assets/fonts/GraphikRegular.otf") format("truetype") font-weight-normal,
+      url("./assets/fonts/GraphikMedium.otf") format("truetype") font-weight-medium,
+      url("./assets/fonts/GraphikSemibold.otf") format("truetype") font-weight-semibold,
       url("./assets/fonts/GraphikBold.otf") format("truetype") font-weight-bold;
   }
 }

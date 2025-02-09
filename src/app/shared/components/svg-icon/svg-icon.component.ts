@@ -1,13 +1,6 @@
 // Angular imports
 import { DomSanitizer } from '@angular/platform-browser';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  SimpleChanges,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, SimpleChanges, inject, input, signal } from '@angular/core';
 
 // 3rd party imports
 import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
@@ -24,12 +17,7 @@ import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
       display: inline-block;
     }
   `,
-  template: `
-    <mat-icon
-      [svgIcon]="icon_name()!"
-      [className]="'block h-auto ' + icon_class()"
-    />
-  `,
+  template: ` <mat-icon [svgIcon]="icon_name()!" [className]="'block h-auto dark:fill-grey1 ' + icon_class()" /> `,
 })
 export class SvgIconComponent {
   sanitizer = inject(DomSanitizer);
@@ -46,10 +34,7 @@ export class SvgIconComponent {
 
       // Register the icon with the icon registry
       if (this.icon_name()) {
-        this.iconRegistry.addSvgIcon(
-          this.icon_name()!,
-          this.sanitizer.bypassSecurityTrustResourceUrl(this.icon())
-        );
+        this.iconRegistry.addSvgIcon(this.icon_name()!, this.sanitizer.bypassSecurityTrustResourceUrl(this.icon()));
       }
     }
   }

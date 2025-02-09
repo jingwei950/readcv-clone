@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { AvatarComponent } from '../avatar/avatar.component';
 
 // Models
-import { Post } from '@models/post.model';
+import { EnrichedPost, Post } from '@models/post.model';
 import { PostUser } from '@models/user.model';
 import { PostButtonObj } from '@models/nav-button.model';
 
@@ -13,13 +13,7 @@ import { PostButtonObj } from '@models/nav-button.model';
 import { DateAsAgoPipe } from '../../pipes/date-as-ago.pipe';
 
 // Icons
-import {
-  heartIcon,
-  repostIcon,
-  commentIcon,
-  bookmarkIcon,
-  ellipsisIcon,
-} from '@components/svg-icon/icons';
+import { heartIcon, repostIcon, commentIcon, bookmarkIcon, ellipsisIcon } from '@components/svg-icon/icons';
 
 // Spartan-ng imports
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
@@ -53,7 +47,7 @@ import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
   ],
   template: `
     <div
-      class="flex gap-3 p-6 border-b border-gray-400 hover:bg-accent hover:cursor-pointer"
+      class="flex gap-3 p-6 border-b border-gray-300 dark:border-primaryBorderColor hover:bg-accent dark:hover:bg-[#1f1f1f] hover:cursor-pointer"
     >
       <!-- Avatar -->
       <App-avatar [avatarUrl]="user?.avatar" [name]="post().name" />
@@ -61,69 +55,52 @@ import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
       <div class="flex flex-col">
         <div class="flex">
           <!-- Name -->
-          <button
-            class="p-0 font-normal text-rvi-gradient"
-            hlmBtn
-            variant="link"
-          >
+          <button class="p-0 text-grey1" hlmBtn variant="link">
             {{ user?.name }}
           </button>
           <!-- Username -->
-          &nbsp;<button
-            class="p-0 text-gray-500 font-normal"
-            hlmBtn
-            variant="link"
-          >
-            &commat;{{ post().username }}
-          </button>
-          <span class="inline-flex items-center text-gray-500"
-            >&nbsp;·&nbsp;</span
-          >
-          <button
-            hlmBtn
-            variant="link"
-            class="p-0 inline-flex items-center text-gray-500 font-normal"
-          >
+          &nbsp;<button class="p-0 font-normal text-grey3" hlmBtn variant="link">&commat;{{ post().username }}</button>
+          <span class="inline-flex items-center text-grey3">&nbsp;·&nbsp;</span>
+          <button hlmBtn variant="link" class="p-0 inline-flex items-center text-grey3 font-normal">
             {{ post().timestamp.toDate() | momentsAgo }}
           </button>
         </div>
 
-        <div class="flex flex-col">
+        <div class="flex flex-col items-start">
           <!-- Post text -->
-          <p class="text-gray-700">{{ post().content }}</p>
+          <p class="text-gray-700 text-sm antialiased">{{ post().content }}</p>
 
           @if (post().contentImgUrl) {
-          <img class="rounded-lg mt-3" [src]="post().contentImgUrl" alt="" />
+            <img class="rounded-lg mt-3" [src]="post().contentImgUrl" alt="" />
           }
           <!-- Post buttons -->
           <div class="mt-4 flex justify-between items-center w-full">
             @for (icon of postIcons; track $index) {
-            <button
-              class="flex items-center justify-center w-full gap-2 flex-auto relative translate-x-[calc(-50%+12px)]"
-            >
-              <App-svg-icon [icon]="icon.icon" icon_class="w-6 h-6" />
+              <button
+                class="flex items-center justify-center w-full gap-2 flex-auto relative translate-x-[calc(-50%+12px)]"
+              >
+                <App-svg-icon [icon]="icon.icon" icon_class="w-6 h-6" />
 
-              @if ( (icon.name === "comment" && post().commentCount > 0) ||
-              (icon.name === "repost" && post().repostCount > 0) || (icon.name
-              === "like" && post().likeCount > 0) ) {
-              <p>
-                {{
-                  icon.name === 'comment'
-                    ? post().commentCount
-                    : icon.name === 'repost'
-                    ? post().repostCount
-                    : post().likeCount
-                }}
-              </p>
-              }
-            </button>
+                @if (
+                  (icon.name === 'comment' && post().commentCount > 0) ||
+                  (icon.name === 'repost' && post().repostCount > 0) ||
+                  (icon.name === 'like' && post().likeCount > 0)
+                ) {
+                  <p>
+                    {{
+                      icon.name === 'comment'
+                        ? post().commentCount
+                        : icon.name === 'repost'
+                          ? post().repostCount
+                          : post().likeCount
+                    }}
+                  </p>
+                }
+              </button>
             }
 
             <div class="flex-1">
-              <button
-                class="flex items-center justify-center w-full"
-                [brnMenuTriggerFor]="menu"
-              >
+              <button class="flex items-center justify-center w-full" [brnMenuTriggerFor]="menu">
                 <App-svg-icon [icon]="ellipsisIcon" icon_class="w-6 h-6" />
               </button>
             </div>
@@ -153,7 +130,7 @@ import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
 })
 export class PostCardComponent {
   // Input
-  post = input.required<Post>();
+  post = input.required<EnrichedPost>();
 
   // Icons
   // commentIcon: PostButton = commentIcon;
@@ -175,7 +152,7 @@ export class PostCardComponent {
       this.user = {
         name: this.post().name,
         username: this.post().username,
-        avatar: this.post().avatar,
+        avatar: this.post().avatarUrl,
       };
     }
     // Post buttons

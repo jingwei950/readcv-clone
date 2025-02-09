@@ -71,7 +71,7 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
                 buttonVariant="small"
                 [name]="currentUser()?.displayName!"
                 [avatarUrl]="currentUser()?.photoURL"
-              ></App-avatar>
+              />
             </button>
             <span *brnTooltipContent class="capitalize">profile</span>
           </hlm-tooltip>
@@ -83,9 +83,9 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
                   brnDialogTrigger
                   hlmTooltipTrigger
                   aria-describedby="createPost"
-                  class="flex justify-center items-center rounded-full w-9 h-9 bg-primary"
+                  class="flex justify-center items-center rounded-full w-9 h-9 bg-primary dark:bg-grey1"
                 >
-                  <App-svg-icon [icon]="plusIcon" icon_class="w-4 h-4 fill-white" />
+                  <App-svg-icon [icon]="plusIcon" icon_class="w-4 h-4 fill-white dark:fill-black" />
                 </button>
 
                 <span *brnTooltipContent class="capitalize">create post</span>
@@ -93,19 +93,19 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
               <hlm-dialog-content
                 #textareaContainer
                 *brnDialogContent="let ctx"
-                class="sm:min-w-[480px] sm:min-h-[168px] max-h-screen !w-full"
+                class="sm:min-w-[480px] sm:min-h-[168px] max-h-screen !w-full dark:text-white"
               >
                 <hlm-dialog-header>
-                  <p class="${hlmSmall} text-muted-foreground antialiased" brnDialogTitle hlm>Anyone can reply</p>
+                  <p class="!text-grey3 antialiased mb-2 text-xs" brnDialogTitle hlm>Anyone can reply</p>
                   <textarea
                     #textarea
                     cdkTextareaAutosize
                     cdkAutosizeMaxRows="35"
                     #autosize="cdkTextareaAutosize"
                     [(ngModel)]="textareaValue"
-                    class="max-h-screen focus:outline-none"
+                    class="max-h-screen focus:outline-none placeholder:text-base dark:placeholder:text-grey3 dark:bg-background dark:text-grey2"
                     type="text"
-                    placeholder="What's on your mind?"
+                    placeholder="What's on your mind..."
                   ></textarea>
                 </hlm-dialog-header>
                 <hlm-dialog-footer>
@@ -117,7 +117,7 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
                         hlmBtn
                         [disabled]="textareaValue().length === 0 ? true : false"
                         type="submit"
-                        class="py-0 px-3 !h-8"
+                        class="py-0 px-3 !h-8 dark:bg-grey1 font-semibold"
                       >
                         Post
                       </button>

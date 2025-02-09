@@ -7,9 +7,14 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
   selector: 'App-feed-tabs',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, HlmButtonModule],
+  styles: `
+    :host {
+      display: contents;
+    }
+  `,
   template: `
     <div
-      class="flex w-full border-b border-gray-400 items-center min-h-16 px-6 sticky top-0 bg-background z-50"
+      class="flex w-full border-b border-gray-300 dark:border-primaryBorderColor bg-background items-center min-h-16 px-6 sticky top-0 z-50"
       [ngClass]="
         navService.navState() === 'msg' || navService.navState() === 'bookmark' ? 'justify-start' : 'justify-center'
       "

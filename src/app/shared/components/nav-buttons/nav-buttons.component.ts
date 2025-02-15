@@ -1,6 +1,6 @@
 // Angular imports
 import { RouterLink } from '@angular/router';
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 
 // Model
 import { NavButtonObj } from '@models/nav-button.model';
@@ -8,24 +8,22 @@ import { NavButtonObj } from '@models/nav-button.model';
 // Components
 import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
 
+// Services
+import { NavigationService } from '@services/navigation.service';
+
 // Spartan-ng imports
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-// import {
-//   BrnDialogContentDirective,
-//   BrnDialogTriggerDirective,
-// } from '@spartan-ng/ui-dialog-brain';
 import {
   HlmDialogComponent,
-  HlmDialogContentComponent,
-  HlmDialogDescriptionDirective,
+  HlmDialogTitleDirective,
   HlmDialogFooterComponent,
   HlmDialogHeaderComponent,
-  HlmDialogTitleDirective,
+  HlmDialogContentComponent,
+  HlmDialogDescriptionDirective,
 } from '@spartan-ng/ui-dialog-helm';
-// import { BrnTooltipContentDirective } from '@spartan-ng/ui-tooltip-brain';
+import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipComponent, HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
-import { homeIcon } from '@components/svg-icon/icons';
-import { NavigationService } from '@services/navigation.service';
+import { BrnDialogContentDirective, BrnDialogTriggerDirective } from '@spartan-ng/brain/dialog';
 
 @Component({
   selector: 'App-nav-buttons',
@@ -40,9 +38,9 @@ import { NavigationService } from '@services/navigation.service';
     HlmDialogFooterComponent,
     HlmDialogHeaderComponent,
     HlmDialogContentComponent,
-    // BrnDialogContentDirective,
-    // BrnDialogTriggerDirective,
-    // BrnTooltipContentDirective,
+    BrnDialogContentDirective,
+    BrnDialogTriggerDirective,
+    BrnTooltipContentDirective,
     HlmTooltipTriggerDirective,
     // HlmDialogDescriptionDirective,
   ],

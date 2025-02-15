@@ -7,6 +7,8 @@ import { PostCardComponent } from '@components/post-card/post-card.component';
 import { PostComposerComponent } from '../post-composer/post-composer.component';
 import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
 import { effect, inject, Component, viewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'App-post-feed',
@@ -18,7 +20,7 @@ import { effect, inject, Component, viewChild, ElementRef, ChangeDetectionStrate
       <div class="flex flex-col w-full">
         <App-feed-tabs />
 
-        @if (currentUser()) {
+        @if (currentUser() && currentRoute() === '/') {
           <App-post-composer [currentUser]="currentUser()!" />
         }
 
@@ -57,6 +59,7 @@ import { effect, inject, Component, viewChild, ElementRef, ChangeDetectionStrate
   `,
 })
 export class PostFeedComponent {
+  router = inject(Router);
   feedService = inject(FeedService);
   authService = inject(AuthService);
   navService = inject(NavigationService);
@@ -68,6 +71,11 @@ export class PostFeedComponent {
   currentUser = this.authService.auth_user;
   userEnrichedPost = toSignal(this.feedService.userEnrichedPost$, { initialValue: [] });
 
+  currentRoute = toSignal(
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).pipe(map((event) => event.url)),
+    { initialValue: '' },
+  );
+
   constructor() {
     effect(() => {
       this.textareaRef()?.nativeElement.addEventListener('input', () => {
@@ -75,6 +83,7 @@ export class PostFeedComponent {
         this.textareaRef()!.nativeElement.style.minHeight = `${this.textareaRef()!.nativeElement.scrollHeight}px`;
       });
 
+      console.log(this.currentRoute());
       console.log(this.userEnrichedPost());
     });
   }

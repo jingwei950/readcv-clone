@@ -1,6 +1,7 @@
-import { tap } from 'rxjs';
+import { combineLatest, forkJoin, map, Observable, of, shareReplay, switchMap, take, tap, zip } from 'rxjs';
 import {
   query,
+  where,
   Firestore,
   collection,
   DocumentData,
@@ -8,9 +9,10 @@ import {
   collectionGroup,
   CollectionReference,
 } from '@angular/fire/firestore';
-import { Post } from '../models/post.model';
+import { EnrichedPost, Post } from '../models/post.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Injectable, inject, signal } from '@angular/core';
+import { User } from '@models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,51 +21,42 @@ export class FeedService {
   // Services
   firestore = inject(Firestore);
   postCollection = collection(this.firestore, 'posts');
-  // private afs = inject(AngularFirestore);
-
-  // Variables
-  allPosts = signal<Post[]>([]);
 
   // Get all posts
-  private allPosts$ = collectionData<Post>(
-    query<Post, DocumentData>(
-      collectionGroup(this.firestore, 'posts') as CollectionReference<Post>
-    ),
-    { idField: 'id' }
-  ).pipe(
-    tap((posts) => {
-      console.log(posts);
-      this.allPosts.set(posts);
-    })
+  allPosts$ = collectionData<Post>(
+    query<Post, DocumentData>(collectionGroup(this.firestore, 'posts') as CollectionReference<Post>),
+    { idField: 'id' },
   );
 
-  private readonly posts = toSignal(this.allPosts$);
+  private allPostsCollection = collection(this.firestore, 'all_posts') as CollectionReference<Post>;
+  private highlightPostsCollection = collection(this.firestore, 'highlight_posts') as CollectionReference<Post>;
+  private userCollection = collection(this.firestore, 'users');
 
-  // Get first layer collection
-  // getPosts(): Observable<Post[]> {
-  //   return collectionData(this.postCollection, {
-  //     idField: 'id',
-  //   }) as Observable<Post[]>;
-  // }
+  getAllPosts$ = collectionData(this.allPostsCollection, { idField: 'id' }) as Observable<Post[]>;
+  getHighlightPosts$ = collectionData(this.highlightPostsCollection, { idField: 'id' }) as Observable<Post[]>;
 
-  // Get all post (From the whole firebase with the collection/subcollection of ID "posts")
-  // getAllPosts(): Observable<Post[]> {
-  //   return collectionData<Post>(
-  //     query<Post, DocumentData>(collectionGroup(this.firestore, 'posts') as CollectionReference<Post>),
-  //     { idField: 'id' },
-  //   );
-  // }
+  userEnrichedPost$ = collectionData(this.allPostsCollection, { idField: 'id' }).pipe(
+    switchMap((posts) => {
+      if (posts.length === 0) return of([]); // Return empty array if no posts
 
-  // constructor(private afs: AngularFirestore) {
-  //   const subcollectionsRef = this.afs.collectionGroup('comments');
-  //   subcollectionsRef.get().subscribe((snapshot) => {
-  //     snapshot.docs.forEach((doc) => {
-  //       const data = doc.data();
-  //       console.log(data);
-  //       // Use the data from each subcollection document
-  //     });
-  //   });
-  // }
+      const postsWithUsers$ = posts.map((post) =>
+        this.getUser(post.uid).pipe(
+          map((user) => ({ ...post, ...user }) as EnrichedPost), // Type assertion
+        ),
+      );
+
+      return combineLatest(postsWithUsers$);
+    }),
+    take(1),
+  ) as Observable<EnrichedPost[]>;
+
+  getUser(uid: string) {
+    return collectionData(query(this.userCollection, where('uid', '==', uid))).pipe(map(([user]) => user));
+  }
+
+  addPost() {
+    // Add user post to firebase
+  }
 
   highlightFeed: Post[] = [
     // {

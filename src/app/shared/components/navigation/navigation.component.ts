@@ -85,7 +85,7 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
                   aria-describedby="createPost"
                   class="flex justify-center items-center rounded-full w-9 h-9 bg-primary dark:bg-grey1"
                 >
-                  <App-svg-icon [icon]="plusIcon" icon_class="w-4 h-4 fill-white dark:fill-black" />
+                  <App-svg-icon [icon]="plusIcon" icon_class="w-4 h-4 fill-white dark:!fill-black" />
                 </button>
 
                 <span *brnTooltipContent class="capitalize">create post</span>
@@ -110,7 +110,7 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
                 </hlm-dialog-header>
                 <hlm-dialog-footer>
                   <div class="flex justify-between items-end w-full">
-                    <App-svg-icon [icon]="imageIcon" icon_class="w-7 h-7" />
+                    <App-svg-icon [icon]="imageIcon" icon_class="w-7 h-7 dark:fill-grey1" />
                     <div>
                       <button hlmBtn variant="link" class="h-8" (click)="closeDialog()">Cancel</button>
                       <button

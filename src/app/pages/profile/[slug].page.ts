@@ -1,15 +1,14 @@
 // Angular imports
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MarkdownComponent } from '@analogjs/content';
-import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Component, inject } from '@angular/core';
 
 // Rxjs
 import { map } from 'rxjs';
 
 @Component({
   standalone: true,
-  imports: [AsyncPipe, MarkdownComponent, RouterLink],
+  imports: [AsyncPipe],
   template: ` {{ profile$ | async }} profile `,
 })
 export default class ProfileComponent {

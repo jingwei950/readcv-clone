@@ -1,6 +1,6 @@
 // Angular imports
 import { DomSanitizer } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component, SimpleChanges, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, SimpleChanges, effect, inject, input, signal } from '@angular/core';
 
 // 3rd party imports
 import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
@@ -27,15 +27,20 @@ export class SvgIconComponent {
   icon_class = input<string>('');
   icon_name = signal<string | null>(null);
 
+  constructor() {
+    effect(() => {
+      if (this.icon()) {
+        this.icon_name.set(this.icon().split('/').pop()?.split('.')[0]!);
+
+        // Register the icon with the icon registry
+        if (this.icon_name()) {
+          this.iconRegistry.addSvgIcon(this.icon_name()!, this.sanitizer.bypassSecurityTrustResourceUrl(this.icon()));
+        }
+      }
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     // Extract out the icon name from the icon path
-    if (this.icon()) {
-      this.icon_name.set(this.icon().split('/').pop()?.split('.')[0]!);
-
-      // Register the icon with the icon registry
-      if (this.icon_name()) {
-        this.iconRegistry.addSvgIcon(this.icon_name()!, this.sanitizer.bypassSecurityTrustResourceUrl(this.icon()));
-      }
-    }
   }
 }

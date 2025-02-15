@@ -1,20 +1,12 @@
-import {
-  effect,
-  inject,
-  Component,
-  viewChild,
-  ElementRef,
-  WritableSignal,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { Post } from '@models/post.model';
 import { FeedService } from '@services/feed.service';
 import { AuthService } from '@services/auth.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationService } from '@services/navigation.service';
 import { FeedTabsComponent } from '../feed-tabs/feed-tabs.component';
 import { PostCardComponent } from '@components/post-card/post-card.component';
-import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
 import { PostComposerComponent } from '../post-composer/post-composer.component';
+import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
+import { effect, inject, Component, viewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'App-post-feed',
@@ -22,7 +14,7 @@ import { PostComposerComponent } from '../post-composer/post-composer.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PostCardComponent, FeedTabsComponent, PostComposerComponent],
   template: `
-    <div class="inline-flex justify-center w-full border-x border-gray-400 min-h-screen">
+    <div class="inline-flex justify-center w-full border-x border-gray-300 dark:border-primaryBorderColor min-h-screen">
       <div class="flex flex-col w-full">
         <App-feed-tabs />
 
@@ -32,8 +24,8 @@ import { PostComposerComponent } from '../post-composer/post-composer.component'
 
         @switch (navService.navState()) {
           @case ('home') {
-            @if (navService.filterState() === 'highlights' && allPosts().length > 0) {
-              @for (post of allPosts(); track $index) {
+            @if (navService.filterState() === 'highlights' && userEnrichedPost().length > 0) {
+              @for (post of userEnrichedPost(); track $index) {
                 <App-post-card [post]="post" />
               }
             } @else if (navService.filterState() === 'everyone') {
@@ -72,8 +64,9 @@ export class PostFeedComponent {
 
   textareaRef = viewChild(ElementRef);
 
-  allPosts: WritableSignal<Post[]> = this.feedService.allPosts;
+  allPosts = toSignal(this.feedService.getAllPosts$, { initialValue: [] });
   currentUser = this.authService.auth_user;
+  userEnrichedPost = toSignal(this.feedService.userEnrichedPost$, { initialValue: [] });
 
   constructor() {
     effect(() => {
@@ -81,6 +74,8 @@ export class PostFeedComponent {
         this.textareaRef()!.nativeElement.style.height = 'auto';
         this.textareaRef()!.nativeElement.style.minHeight = `${this.textareaRef()!.nativeElement.scrollHeight}px`;
       });
+
+      console.log(this.userEnrichedPost());
     });
   }
 }

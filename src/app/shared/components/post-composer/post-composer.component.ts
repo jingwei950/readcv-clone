@@ -42,12 +42,12 @@ import { ChangeDetectionStrategy, Component, input, model, signal } from '@angul
               <App-svg-icon [icon]="imageIcon" icon_class="w-7 h-7" />
             </button>
             <div class="flex gap-x-2 items-end justify-end w-full">
-              <button hlmBtn variant="link" class="h-8" (click)="onBlurEvent($event)">Cancel</button>
+              <button hlmBtn variant="link" class="pb-0 pt-1 h-8" (click)="onBlurEvent($event)">Cancel</button>
               <button
                 hlmBtn
                 [disabled]="textareaValue().length === 0 ? true : false"
                 type="submit"
-                class="py-0 px-3 !h-8"
+                class="pb-0 pt-1 px-3 !h-8 text-center"
               >
                 Post
               </button>

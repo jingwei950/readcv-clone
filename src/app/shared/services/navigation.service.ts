@@ -71,6 +71,12 @@ export class NavigationService {
       iconSolid: this.bookmarkIconSolid,
       iconSelected: false,
     },
+    {
+      name: 'profile',
+      alias: 'profile',
+      path: '/profile',
+      iconSelected: false,
+    },
   ]);
   filterState = signal<string>('highlights');
   notificationFilterState = signal<string>('all');

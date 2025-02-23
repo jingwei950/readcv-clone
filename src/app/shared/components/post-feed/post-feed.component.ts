@@ -50,6 +50,9 @@ import { filter, map } from 'rxjs';
           @case ('bookmark') {
             <p>bookmark</p>
           }
+          @case ('profile') {
+            <p>profile</p>
+          }
           @default {
             <!-- <App-post-card /> -->
           }

@@ -1,6 +1,11 @@
 // Angular imports
 import { inject, signal, Component, viewChild, ChangeDetectionStrategy, model } from '@angular/core';
-import { BrnDialogComponent, BrnDialogContentDirective, BrnDialogTriggerDirective } from '@spartan-ng/brain/dialog';
+import {
+  BrnDialogComponent,
+  BrnDialogContentDirective,
+  BrnDialogTitleDirective,
+  BrnDialogTriggerDirective
+} from "@spartan-ng/brain/dialog";
 import { HlmTooltipComponent, HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 import {
   HlmDialogComponent,
@@ -9,33 +14,29 @@ import {
   HlmDialogContentComponent,
 } from '@spartan-ng/ui-dialog-helm';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { AuthService } from '@services/auth.service';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { imageIcon, plusIcon } from '@components/svg-icon/icons';
 import { NavigationService } from '@services/navigation.service';
-import { AvatarComponent } from '@components/avatar/avatar.component';
 import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
 import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
 import { NavButtonsComponent } from '@components/nav-buttons/nav-buttons.component';
 import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
-import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
 
 @Component({
   selector: 'App-navigation',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    RouterLink,
     FormsModule,
     TextFieldModule,
-    AvatarComponent,
     SvgIconComponent,
     HlmButtonDirective,
     HlmDialogComponent,
     HlmTooltipComponent,
     NavButtonsComponent,
+    BrnDialogTitleDirective,
     HlmDialogHeaderComponent,
     HlmDialogFooterComponent,
     HlmDialogContentComponent,
@@ -57,24 +58,8 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
             <App-nav-buttons [icon]="icon" [iconSelected]="icon.iconSelected" (onClick)="changeState($event)" />
           </div>
         }
+
         @if (currentUser()) {
-          <hlm-tooltip>
-            <button
-              position="right"
-              brnDialogTrigger
-              hlmTooltipTrigger
-              aria-describedby="profile"
-              class="w-16 h-16 inline-flex items-center justify-center ml-auto"
-              [routerLink]="'/profile/' + currentUser()?.displayName"
-            >
-              <App-avatar
-                buttonVariant="small"
-                [name]="currentUser()?.displayName!"
-                [avatarUrl]="currentUser()?.photoURL"
-              />
-            </button>
-            <span *brnTooltipContent class="capitalize">profile</span>
-          </hlm-tooltip>
           <div class="w-16 h-16 inline-flex items-center justify-center ml-auto">
             <hlm-dialog>
               <hlm-tooltip>
@@ -96,7 +81,7 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
                 class="sm:min-w-[480px] sm:min-h-[168px] max-h-screen !w-full dark:text-white"
               >
                 <hlm-dialog-header>
-                  <p class="!text-grey3 antialiased mb-2 text-xs" brnDialogTitle hlm>Anyone can reply</p>
+                  <p class="!text-grey3 antialiased mb-2 text-xs" brnDialogTitle>Anyone can reply</p>
                   <textarea
                     #textarea
                     cdkTextareaAutosize
@@ -115,7 +100,7 @@ import { hlmLead, hlmSmall } from '@spartan-ng/ui-typography-helm';
                       <button hlmBtn variant="link" class="h-8" (click)="closeDialog()">Cancel</button>
                       <button
                         hlmBtn
-                        [disabled]="textareaValue().length === 0 ? true : false"
+                        [disabled]="textareaValue().length === 0"
                         type="submit"
                         class="py-0 px-3 !h-8 dark:bg-grey1 font-semibold"
                       >
@@ -152,7 +137,7 @@ export class NavigationComponent {
     this.viewchildDialogRef()?.close({});
   }
 
-  changeState(e: any) {
+  changeState(e: string) {
     this.navService.navState.set(e);
 
     this.navigationIconState.set(

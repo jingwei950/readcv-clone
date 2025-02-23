@@ -5,6 +5,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 @Component({
   selector: 'App-feed-tabs',
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, HlmButtonModule],
   styles: `
@@ -51,6 +52,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
         <p class="font-medium text-sm text-primary">Replies</p>
       } @else if (navService.navState() === 'bookmark') {
         <p class="font-medium text-sm text-primary">Bookmarks</p>
+      } @else if (navService.navState() === 'profile') {
+        <p class="font-medium text-sm text-primary">Profile</p>
       }
     </div>
   `,

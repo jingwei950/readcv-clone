@@ -5,8 +5,8 @@ export interface ButtonObj {
 }
 
 export interface NavButtonObj extends ButtonObj {
-  icon: string;
-  iconSolid: string;
+  icon?: string;
+  iconSolid?: string;
   iconSelected?: boolean;
 }
 

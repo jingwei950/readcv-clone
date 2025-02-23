@@ -33,7 +33,7 @@ import { ChangeDetectionStrategy, Component, input, model, signal } from '@angul
           [(ngModel)]="textareaValue"
           (focus)="onFocusEvent($event)"
           placeholder="What's on your mind..."
-          class="max-h-screen focus:outline-none w-full placeholder:text-base dark:bg-background"
+          class="max-h-screen focus:outline-none w-full placeholder:text-base dark:bg-background dark:text-grey1"
         ></textarea>
 
         @if (textareaFocusState()) {

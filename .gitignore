@@ -19,6 +19,9 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+coding-preferences.mdc
+my-stack.mdc
+workflow-preferences.mdc
 
 # Visual Studio Code
 .vscode/*

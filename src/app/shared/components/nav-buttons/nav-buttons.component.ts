@@ -22,18 +22,19 @@ import {
 import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipComponent, HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 import {
-  BrnDialogContentDirective, BrnDialogDescriptionDirective,
+  BrnDialogContentDirective,
+  BrnDialogDescriptionDirective,
   BrnDialogTitleDirective,
-  BrnDialogTriggerDirective
-} from "@spartan-ng/brain/dialog";
+  BrnDialogTriggerDirective,
+} from '@spartan-ng/brain/dialog';
 import { AuthService } from '@services/auth.service';
 import { imageIcon, plusIcon } from '@components/svg-icon/icons';
 import { AvatarComponent } from '@components/avatar/avatar.component';
 import { FormsModule } from '@angular/forms';
-
 @Component({
   selector: 'App-nav-buttons',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     FormsModule,
@@ -52,7 +53,8 @@ import { FormsModule } from '@angular/forms';
     BrnDialogTitleDirective,
     BrnDialogDescriptionDirective,
   ],
-  template: `@if (icon().alias === 'search') {
+  template: `
+    @if (icon().alias === 'search') {
       <hlm-dialog>
         <hlm-tooltip>
           <button position="right" brnDialogTrigger hlmTooltipTrigger aria-describedby="{{ icon().name || '' }}">
@@ -103,8 +105,8 @@ import { FormsModule } from '@angular/forms';
 
         <span *brnTooltipContent class="capitalize">{{ icon().name }}</span>
       </hlm-tooltip>
-    } `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    }
+  `,
 })
 export class NavButtonsComponent {
   authService = inject(AuthService);

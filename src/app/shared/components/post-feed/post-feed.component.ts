@@ -1,20 +1,28 @@
-import { FeedService } from '@services/feed.service';
-import { AuthService } from '@services/auth.service';
+// Angular imports
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationService } from '@services/navigation.service';
+import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
+import { effect, inject, Component, viewChild, ElementRef, ChangeDetectionStrategy, OnInit } from '@angular/core';
+
+// Components
 import { FeedTabsComponent } from '../feed-tabs/feed-tabs.component';
+import { ProfileComponent } from '@components/profile/profile.component';
 import { PostCardComponent } from '@components/post-card/post-card.component';
 import { PostComposerComponent } from '../post-composer/post-composer.component';
+
+// Services
+import { FeedService } from '@services/feed.service';
+import { AuthService } from '@services/auth.service';
+import { NavigationService } from '@services/navigation.service';
 import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
-import { effect, inject, Component, viewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+
+// 3rd party imports
 import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'App-post-feed',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PostCardComponent, FeedTabsComponent, PostComposerComponent],
+  imports: [PostCardComponent, ProfileComponent, FeedTabsComponent, PostComposerComponent],
   template: `
     <div class="inline-flex justify-center w-full border-x border-gray-300 dark:border-primaryBorderColor min-h-screen">
       <div class="flex flex-col w-full">
@@ -51,7 +59,7 @@ import { filter, map } from 'rxjs';
             <p>bookmark</p>
           }
           @case ('profile') {
-            <p>profile</p>
+            <app-profile />
           }
           @default {
             <!-- <App-post-card /> -->
@@ -61,16 +69,15 @@ import { filter, map } from 'rxjs';
     </div>
   `,
 })
-export class PostFeedComponent {
+export class PostFeedComponent implements OnInit {
   router = inject(Router);
   feedService = inject(FeedService);
   authService = inject(AuthService);
   navService = inject(NavigationService);
-  screenSize = inject(ResponsiveBreakpointService);
+  route = inject(ActivatedRoute);
 
   textareaRef = viewChild(ElementRef);
 
-  allPosts = toSignal(this.feedService.getAllPosts$, { initialValue: [] });
   currentUser = this.authService.auth_user;
   userEnrichedPost = toSignal(this.feedService.userEnrichedPost$, { initialValue: [] });
 
@@ -78,6 +85,13 @@ export class PostFeedComponent {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).pipe(map((event) => event.url)),
     { initialValue: '' },
   );
+
+  ngOnInit() {
+    // Check if we're on the profile page and update navigation state appropriately
+    if (this.currentRoute().includes('/profile')) {
+      this.navService.updateNavState('profile');
+    }
+  }
 
   constructor() {
     effect(() => {

@@ -4,8 +4,8 @@ import {
   BrnDialogComponent,
   BrnDialogContentDirective,
   BrnDialogTitleDirective,
-  BrnDialogTriggerDirective
-} from "@spartan-ng/brain/dialog";
+  BrnDialogTriggerDirective,
+} from '@spartan-ng/brain/dialog';
 import { HlmTooltipComponent, HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 import {
   HlmDialogComponent,
@@ -138,22 +138,6 @@ export class NavigationComponent {
   }
 
   changeState(e: string) {
-    this.navService.navState.set(e);
-
-    this.navigationIconState.set(
-      this.navigationIconState().map((item, i) => {
-        if (item.alias !== e) {
-          return {
-            ...this.navigationIconState()[i],
-            iconSelected: false,
-          };
-        } else {
-          return {
-            ...this.navigationIconState()[i],
-            iconSelected: true,
-          };
-        }
-      }),
-    );
+    this.navService.updateNavState(e);
   }
 }

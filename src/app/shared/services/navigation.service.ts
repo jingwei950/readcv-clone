@@ -30,6 +30,8 @@ export class NavigationService {
   paperPlaneIconSolid: string = paperPlaneIconSolid;
 
   navState = signal<string>('home');
+  previousNavState = signal<string>('home');
+
   iconState = signal<NavButtonObj[]>([
     {
       name: 'home',
@@ -80,4 +82,28 @@ export class NavigationService {
   ]);
   filterState = signal<string>('highlights');
   notificationFilterState = signal<string>('all');
+
+  updateNavState(newState: string): void {
+    if (this.navState() !== 'profile' && newState === 'profile') {
+      this.previousNavState.set(this.navState());
+    }
+    this.navState.set(newState);
+
+    this.updateIconSelectedState(newState);
+  }
+
+  updateIconSelectedState(selectedState: string): void {
+    this.iconState.update((icons) =>
+      icons.map((icon) => ({
+        ...icon,
+        iconSelected: icon.alias === selectedState,
+      })),
+    );
+  }
+
+  getPreviousStatePath(): string {
+    const prevState = this.previousNavState();
+    const navItem = this.iconState().find((item) => item.alias === prevState);
+    return navItem?.path || '/';
+  }
 }

@@ -5,7 +5,8 @@ import {
   collection,
   DocumentReference,
 } from '@angular/fire/firestore';
-import { User } from '@angular/fire/auth';
+import { User as FirebaseUser } from '@angular/fire/auth';
+import { User } from "@models/user.model"
 import { AuthService } from './auth.service';
 import { Observable, of, switchMap } from 'rxjs';
 import { Injectable, inject } from '@angular/core';
@@ -30,8 +31,8 @@ export class UserService {
 
   doc?: DocumentReference;
 
-  current_user$ = this.currentAuthUser$?.pipe(
-    switchMap((auth_user: User | null) => {
+  current_user$: Observable<User | null> = this.currentAuthUser$?.pipe(
+    switchMap((auth_user: FirebaseUser | null) => {
       if (auth_user) {
         this.doc = doc(this.firestore, 'users', auth_user.uid);
         return (docData(this.doc) as Observable<User>).pipe(
@@ -48,7 +49,7 @@ export class UserService {
       }
     })
   ) as Observable<User | null>;
-  current_user = toSignal(this.current_user$);
+  // current_user = toSignal(this.current_user$);
 
   // Create user
   addUser(user: User): void {

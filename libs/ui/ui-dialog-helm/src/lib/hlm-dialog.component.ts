@@ -23,6 +23,6 @@ import { HlmDialogOverlayDirective } from './hlm-dialog-overlay.directive';
 export class HlmDialogComponent extends BrnDialogComponent {
 	constructor() {
 		super();
-		this.closeDelay = 100;
+		// this.closeDelay = 100;
 	}
 }

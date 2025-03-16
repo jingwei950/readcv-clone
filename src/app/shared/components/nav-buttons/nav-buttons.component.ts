@@ -1,6 +1,7 @@
 // Angular imports
 import { RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Model
 import { NavButtonObj } from '@models/nav-button.model';
@@ -83,8 +84,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
           hlmTooltipTrigger
           aria-describedby="profile"
           class="w-16 h-16 inline-flex items-center justify-center ml-auto"
-          (click)="routeTo(icon().alias)"
-          [routerLink]="appUser()?.username ? ['/', appUser()!.username] : ['/profile']"
+          (click)="navigateToProfile()"
         >
           <App-avatar
             buttonVariant="small"
@@ -115,6 +115,7 @@ export class NavButtonsComponent {
   authService = inject(AuthService);
   navService = inject(NavigationService);
   userService = inject(UserService);
+  router = inject(Router);
 
   currentUser = this.authService.auth_user;
   appUser = toSignal(this.userService.current_user$);
@@ -131,5 +132,10 @@ export class NavButtonsComponent {
 
   routeTo(route: string) {
     this.onClick.emit(route);
+  }
+
+  navigateToProfile() {
+    this.onClick.emit('profile');
+    this.navService.navigateToProfile(this.router);
   }
 }

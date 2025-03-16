@@ -132,6 +132,7 @@ export class NavButtonsComponent {
 
   routeTo(route: string) {
     this.onClick.emit(route);
+    this.navService.previousNavState.set(this.navService.navState());
   }
 
   navigateToProfile() {

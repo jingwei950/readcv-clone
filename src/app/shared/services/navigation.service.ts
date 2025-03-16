@@ -118,25 +118,26 @@ export class NavigationService {
    * @param identifier User identifier (uid or username)
    */
   async navigateToProfile(router: Router, identifier?: string): Promise<void> {
-    // Save the current state before navigating
-    this.previousNavState.set(this.navState());
-
     // Update the navigation state
     this.updateNavState('profile');
 
     // Navigate to the profile page
     if (identifier) {
-      // Use the new username route format: /username directly
+      // Make sure to navigate using the correct route format
+      console.log('Navigating to profile for:', identifier);
       router.navigate(['/', identifier]);
     } else {
       // For the current user, we need to get the username
       const currentUser = await firstValueFrom(this.userService.current_user$);
+      console.log('Current user for profile navigation:', currentUser);
 
       if (currentUser?.username) {
         // If user has a username, navigate to /:username
+        console.log('Navigating to profile for current user:', currentUser.username);
         router.navigate(['/', currentUser.username]);
       } else {
         // Fall back to /profile if no username
+        console.log('Navigating to /profile (fallback)');
         router.navigate(['/profile']);
       }
     }

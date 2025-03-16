@@ -1,42 +1,45 @@
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { Profile, ProfilePost } from '../../models/profile.model';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
+import { ProfilePost } from '../../models/profile.model';
+import { EnrichedProfile } from '../../services/profile.service';
+import { ChangeDetectionStrategy, Component, computed, effect, input, inject, signal } from '@angular/core';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucidePencil, lucideSend, lucideCheck } from '@ng-icons/lucide';
+import { ProfileService } from '../../services/profile.service';
+import { UserService } from '../../services/user.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'App-profile',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, HlmButtonDirective, NgIcon, HlmIconDirective],
+  providers: [provideIcons({ lucideSend, lucidePencil, lucideCheck })],
   template: `
-    <div
-      class="mx-auto bg-white dark:bg-transparent overflow-hidden shadow-sm border-b border-gray-100 dark:border-primaryBorderColor"
-    >
+    <div class="mx-auto bg-white dark:bg-transparent overflow-hidden">
       <!-- Profile Header -->
-      <div class="p-8 pb-4">
+      <div class="pt-3 px-6 pb-9">
         <div class="flex flex-row items-center justify-center gap-3">
           <img
-            [src]="
-              profile()?.profilePicture || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=1470'
-            "
+            [src]="profile()?.avatarUrl"
             alt="Profile Picture"
-            class="rounded-full bg-white dark:bg-gray-800 flex-shrink-0"
-            style="width: 100px; height: 100px;"
+            class="rounded-full bg-white dark:bg-gray-800 flex-shrink-0 w-[92px] h-[92px]"
           />
 
           <div class="flex flex-col flex-grow">
             <div class="text-lg font-bold mb-0 flex items-center text-left">
-              <span class="text-gray-900 dark:text-white">{{ profile()?.name || 'Taurean Bryant' }}</span>
-              <span class="ml-2 text-gray-500 dark:text-gray-400">Not Found</span>
+              <span class="text-gray-900 dark:text-white">{{ profile()?.name }}</span>
             </div>
 
             <p class="text-sm text-gray-600 dark:text-gray-300 mt-0 text-left">
-              {{ profile()?.headline || 'Design engineer in Vallejo CA, He/Him' }}
+              {{ profileDetails() }}
             </p>
 
             <div class="mt-2 text-sm text-left">
               <a href="#" class="text-gray-500 dark:text-gray-400 hover:underline">
-                {{ profile()?.links?.[0] || 'Taurean.work' }}
+                {{ profile()?.website }}
               </a>
             </div>
           </div>
@@ -44,37 +47,60 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center gap-3 mt-4 px-8 pb-4">
-        <button
-          class="bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 w-full flex justify-center py-2.5 text-sm antialiased font-bold px-4 py-1.5 rounded-full transition-colors"
-        >
-          Follow
-        </button>
-        <button
-          class="p-2 flex items-center justify-center bg-foreground dark:bg-foreground rounded-full transition-colors text-white"
-          style="width: 48px; height: 48px;"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 28 28"
-            width="24"
-            height="24"
-            fill="white"
-            stroke="white"
-            stroke-width="0.5"
+      <div class="flex items-center gap-3 px-8 pb-4">
+        @if (isProfileOwner()) {
+          <!-- Show follower/following counts for profile owner -->
+          <button
+            hlmBtn
+            class="bg-foreground hover:bg-gray-800 dark:bg-foreground dark:text-grey1 w-full flex justify-center py-2.5 text-sm antialiased px-4 rounded-full transition-colors"
+            (click)="navigateToFollowers()"
           >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M20.608 3.463c1.204-.794 2.798.126 2.711 1.565l-1.09 18.154c-.089 1.493-1.888 2.193-2.963 1.153l-5.667-5.48a.25.25 0 00-.105-.06l-7.58-2.168c-1.437-.412-1.73-2.32-.483-3.143l15.177-10.02zm1.214 1.476a.25.25 0 00-.387-.224L6.258 14.735a.25.25 0 00.069.45l7.58 2.168c.276.079.528.224.735.424l5.667 5.48a.25.25 0 00.423-.165l1.09-18.153z"
-            ></path>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.19 7.317l-5.383 11.325-1.732-1L20.19 7.317z"></path>
-          </svg>
-        </button>
+            <span>{{ profile()?.followerCount || 0 }} followers</span>
+          </button>
+          <button
+            hlmBtn
+            class="bg-foreground hover:bg-gray-800 dark:bg-foreground dark:text-grey1 w-full flex justify-center py-2.5 text-sm antialiased px-4 rounded-full transition-colors"
+            (click)="navigateToFollowing()"
+          >
+            <span>{{ profile()?.followingCount || 0 }} following</span>
+          </button>
+          <div class="flex-shrink-0">
+            <button
+              hlmBtn
+              class="!rounded-full bg-foreground dark:bg-foreground text-grey1 flex items-center justify-center w-12 h-12 flex-shrink-0 aspect-square overflow-hidden p-0"
+              (click)="navigateToEditProfile()"
+            >
+              <ng-icon hlm size="20px" name="lucidePencil" class="text-white" />
+            </button>
+          </div>
+        } @else {
+          <!-- Show follow and message buttons for other profiles -->
+          <button
+            hlmBtn
+            class="bg-foreground hover:bg-gray-800 dark:bg-foreground dark:text-grey1 w-full flex justify-center py-2.5 text-sm antialiased px-4 rounded-full transition-colors"
+            (click)="toggleFollow()"
+            [disabled]="isFollowLoading()"
+          >
+            @if (isFollowing()) {
+              <ng-icon hlm size="16px" name="lucideCheck" class="mr-2 text-current" />
+              <span>following</span>
+            } @else {
+              <span>Follow</span>
+            }
+          </button>
+          <div class="flex-shrink-0">
+            <button
+              hlmBtn
+              class="!rounded-full bg-foreground dark:bg-foreground text-white flex items-center justify-center w-12 h-12 flex-shrink-0 aspect-square overflow-hidden p-0"
+            >
+              <ng-icon hlm size="20px" name="lucideSend" class="text-white" />
+            </button>
+          </div>
+        }
       </div>
 
       <!-- Tabs -->
-      <div class="flex border-b border-gray-100 dark:border-primaryBorderColor px-8 justify-between">
+      <div class="flex border-b border-gray-300 dark:border-primaryBorderColor px-8 justify-between">
         <a
           href="#"
           class="py-3 px-4 text-sm font-medium text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white flex-1 text-center"
@@ -98,8 +124,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       <!-- Profile Content -->
       <div class="py-6 text-left">
         <!-- Posts -->
-        @for (post of profile()?.posts || defaultPosts; track post.content) {
-          <div class="px-8 mb-6 pb-6 border-b dark:border-primaryBorderColor last:border-0 text-left">
+        @for (post of profile()?.posts; track post.content) {
+          <div class="px-8 mb-6 pb-6 border-b dark:border-primaryBorderColor text-left">
             <p class="text-gray-800 dark:text-gray-200 text-left">{{ post.content }}</p>
             <div class="mt-2 text-sm text-gray-500 dark:text-gray-400 text-left">{{ post.date }}</div>
             <div class="flex gap-4 mt-3 text-sm text-gray-500 dark:text-gray-400 justify-start">
@@ -142,17 +168,150 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
             </div>
           </div>
         } @empty {
-          <div class="px-8 text-center py-6 text-gray-500 dark:text-gray-400">No posts to display</div>
+          <div class="px-8 text-center py-6 text-gray-500 dark:text-gray-400 text-base font-semibold">
+            No posts yet 🍃
+          </div>
         }
       </div>
     </div>
   `,
 })
 export class ProfileComponent {
-  profile = input<Profile>();
+  private router = inject(Router);
+  private profileService = inject(ProfileService);
+  private userService = inject(UserService);
 
-  // Default links to show when no profile is provided
-  defaultLinks = ['Portfolio', 'Twitter', 'LinkedIn', 'GitHub'];
+  profile = input<EnrichedProfile>();
+  isProfileOwner = input<boolean>(false); // Default to false
+
+  // Convert current user to signal
+  currentUser = toSignal(this.userService.current_user$);
+
+  // Loading state
+  isFollowLoading = signal<boolean>(false);
+
+  // Following state
+  isFollowing = signal<boolean>(false);
+
+  profileDetails = computed<string>(() => {
+    const occupation = this.profile()?.occupation;
+    const location = this.profile()?.location;
+    const pronouns = this.profile()?.pronouns;
+
+    const parts: string[] = [];
+
+    // Add occupation if available
+    if (occupation) {
+      parts.push(occupation);
+    }
+
+    // Add location if available
+    if (location) {
+      // Only add "in" if there's an occupation
+      parts.push(occupation ? `in ${location}` : location);
+    }
+
+    // Add pronouns if available
+    if (pronouns) {
+      parts.push(pronouns);
+    }
+
+    // Join all available parts with appropriate separators
+    if (parts.length === 0) {
+      return ''; // No info available
+    } else if (parts.length === 1) {
+      return parts[0]; // Just one piece of info
+    } else {
+      // Custom formatting to handle the "in" case specially
+      let result = '';
+
+      for (let i = 0; i < parts.length; i++) {
+        if (i === 0) {
+          // First part (no prefix needed)
+          result += parts[i];
+        } else if (parts[i].startsWith('in ')) {
+          // If this part starts with "in", don't add a comma before it
+          result += ' ' + parts[i];
+        } else {
+          // Otherwise add a comma
+          result += ', ' + parts[i];
+        }
+      }
+
+      return result;
+    }
+  });
+
+  constructor() {
+    // Initialize following state based on profile and current user
+    effect(() => {
+      const user = this.currentUser();
+      const profileId = this.profile()?.uid;
+
+      if (user && profileId && user.uid !== profileId) {
+        // When profile or user changes, check following status
+        this.checkFollowingStatus(user.uid, profileId);
+      }
+    });
+  }
+
+  /**
+   * Check if current user is following the profile
+   */
+  private checkFollowingStatus(userId: string, profileId: string): void {
+    this.profileService.isFollowing(userId, profileId).subscribe((following) => {
+      this.isFollowing.set(following);
+    });
+  }
+
+  /**
+   * Toggle follow/unfollow status for the current profile
+   */
+  async toggleFollow(): Promise<void> {
+    const user = this.currentUser();
+    const profileId = this.profile()?.uid;
+
+    if (!user || !profileId || this.isFollowLoading()) {
+      return;
+    }
+
+    this.isFollowLoading.set(true);
+
+    try {
+      if (this.isFollowing()) {
+        // Unfollow the user
+        await this.profileService.unfollowUser(user.uid, profileId);
+        this.isFollowing.set(false);
+      } else {
+        // Follow the user
+        await this.profileService.followUser(user.uid, profileId);
+        this.isFollowing.set(true);
+      }
+    } catch (error) {
+      console.error('Error toggling follow status:', error);
+    } finally {
+      this.isFollowLoading.set(false);
+    }
+  }
+
+  // Navigation methods
+  navigateToFollowers() {
+    const username = this.profile()?.username;
+    if (username) {
+      this.router.navigate(['/profile', username, 'followers']);
+    }
+  }
+
+  navigateToFollowing() {
+    const username = this.profile()?.username;
+    if (username) {
+      this.router.navigate(['/profile', username, 'following']);
+    }
+  }
+
+  navigateToEditProfile() {
+    this.router.navigate(['/settings/profile']);
+  }
 
   // Default posts
   defaultPosts: ProfilePost[] = [

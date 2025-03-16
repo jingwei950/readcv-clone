@@ -1,5 +1,5 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { effect, ElementRef, HostBinding, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,6 @@ export class DarkModeService {
           this.document.body.classList.remove('dark');
           localStorage.setItem('theme', 'light');
         }
-        console.log(this.isDark());
       });
     }
   }

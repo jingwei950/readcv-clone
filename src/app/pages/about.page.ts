@@ -1,5 +1,10 @@
 // Angular imports
+import { RouteMeta } from '@analogjs/router';
 import { Component } from '@angular/core';
+
+export const routeMeta: RouteMeta = {
+  title: 'About',
+};
 
 @Component({
   standalone: true,

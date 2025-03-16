@@ -9,10 +9,12 @@ import {
   sendSignInLinkToEmail,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  UserCredential,
 } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Injectable, effect, inject } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +27,11 @@ export class AuthService {
   auth_user = toSignal(this.auth_user$);
   provider = new GoogleAuthProvider();
 
+  // Email link authentication result subject
+  private emailLinkAuthResultSubject = new BehaviorSubject<UserCredential | null>(null);
+  // Observable that components can subscribe to
+  public emailLinkAuthResult$ = this.emailLinkAuthResultSubject.asObservable();
+
   actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
     // URL must be in the authorized domains list in the Firebase Console.
@@ -34,12 +41,7 @@ export class AuthService {
 
   constructor() {
     effect(() => {
-      // console.log(this.auth_user());
-
-      if (
-        !this.auth &&
-        isSignInWithEmailLink(this.auth, window.location.href)
-      ) {
+      if (!this.auth && isSignInWithEmailLink(this.auth, window.location.href)) {
         let email = window.localStorage.getItem('emailForSignIn');
         if (!email) {
           email = window.prompt('Please provide your email for confirmation');
@@ -47,9 +49,13 @@ export class AuthService {
           signInWithEmailLink(this.auth, email, window.location.href)
             .then((result) => {
               window.localStorage.removeItem('emailForSignIn');
+              // Emit the authentication result
+              this.emailLinkAuthResultSubject.next(result);
+              console.log('Email link authentication successful');
             })
             .catch((error) => {
               console.log(error);
+              this.emailLinkAuthResultSubject.next(null);
               return;
             });
         }
@@ -66,28 +72,41 @@ export class AuthService {
     window.location.reload();
   }
 
-  // RVI login
-  async emailPasswordAuth(email: string, password: string, new_user?: boolean) {
+  // Email/password login or register
+  async emailPasswordAuth(email: string, password: string, new_user?: boolean): Promise<UserCredential | null> {
     try {
+      let userCredential: UserCredential;
+
       if (new_user) {
-        await createUserWithEmailAndPassword(this.auth, email, password);
+        userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       } else {
-        await signInWithEmailAndPassword(this.auth, email, password);
+        userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       }
       console.log('Logged in successfully...');
+      return userCredential;
     } catch (error: any) {
       console.error(error);
       this.errorHandling(error);
+      return null;
     }
   }
 
-  async googleAuth() {
+  // Google login
+  async googleAuth(): Promise<UserCredential | null> {
     try {
-      await signInWithPopup(this.auth, this.provider);
+      const result = await signInWithPopup(this.auth, this.provider);
+      return result;
     } catch (error: any) {
       console.error(error);
       this.errorHandling(error);
+      return null;
     }
+  }
+
+  // Check if user is new
+  isNewUser(result: UserCredential): boolean {
+    // @ts-ignore - additional user info is available but TypeScript doesn't know about it
+    return !!result._tokenResponse?.isNewUser;
   }
 
   async sendEmailLinkAuth(email: string) {
@@ -106,17 +125,13 @@ export class AuthService {
         alert('😅 There is an account with that email. Jump back in...');
         break;
       case 'auth/user-not-found':
-        alert(
-          '🤷 User not found... \n\nIf you are new to RVI, create an account 😊.'
-        );
+        alert('🤷 User not found... \n\nIf you are new to RVI, create an account 😊.');
         break;
       case 'auth/missing-email':
         alert('🤷 Email does not exist...');
         break;
       case 'auth/invalid-email':
-        alert(
-          '🤷  Email does not exist... \n\nIf you are new to RVI, create an account 😊.'
-        );
+        alert('🤷  Email does not exist... \n\nIf you are new to RVI, create an account 😊.');
         break;
       case 'auth/wrong-password':
         alert('🧐 Check your email and password again...');

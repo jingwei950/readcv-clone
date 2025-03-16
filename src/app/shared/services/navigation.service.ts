@@ -10,13 +10,18 @@ import {
   bookmarkIconSolid,
   paperPlaneIconSolid,
 } from '@components/svg-icon/icons';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { NavButtonObj } from '@models/nav-button.model';
+import { Router } from '@angular/router';
+import { UserService } from '@services/user.service';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NavigationService {
+  private userService = inject(UserService);
+
   homeIcon: string = homeIcon;
   bellIcon: string = bellIcon;
   searchIcon: string = searchIcon;
@@ -105,5 +110,35 @@ export class NavigationService {
     const prevState = this.previousNavState();
     const navItem = this.iconState().find((item) => item.alias === prevState);
     return navItem?.path || '/';
+  }
+
+  /**
+   * Navigate to a user's profile
+   * @param router Angular Router instance
+   * @param identifier User identifier (uid or username)
+   */
+  async navigateToProfile(router: Router, identifier?: string): Promise<void> {
+    // Save the current state before navigating
+    this.previousNavState.set(this.navState());
+
+    // Update the navigation state
+    this.updateNavState('profile');
+
+    // Navigate to the profile page
+    if (identifier) {
+      // Use the new username route format: /username directly
+      router.navigate(['/', identifier]);
+    } else {
+      // For the current user, we need to get the username
+      const currentUser = await firstValueFrom(this.userService.current_user$);
+
+      if (currentUser?.username) {
+        // If user has a username, navigate to /:username
+        router.navigate(['/', currentUser.username]);
+      } else {
+        // Fall back to /profile if no username
+        router.navigate(['/profile']);
+      }
+    }
   }
 }

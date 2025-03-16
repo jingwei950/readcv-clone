@@ -1,5 +1,4 @@
 import { NgClass } from '@angular/common';
-import { User } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 import { imageIcon } from '@components/svg-icon/icons';
 import { TextFieldModule } from '@angular/cdk/text-field';
@@ -7,6 +6,7 @@ import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { ChangeDetectionStrategy, Component, input, model, signal } from '@angular/core';
+import { User } from '@models/user.model';
 
 @Component({
   selector: 'App-post-composer',
@@ -17,7 +17,7 @@ import { ChangeDetectionStrategy, Component, input, model, signal } from '@angul
       class="flex gap-3 px-6 py-5 border-b border-gray-300 dark:border-primaryBorderColor max-h-screen"
       [ngClass]="textareaFocusState() ? 'items-start' : 'items-center'"
     >
-      <App-avatar buttonVariant="medium" [name]="currentUser().displayName!" [avatarUrl]="currentUser().photoURL" />
+      <App-avatar buttonVariant="medium" [name]="currentUser().name!" [avatarUrl]="currentUser().avatarUrl" />
 
       <div class="flex flex-col items-start w-full">
         @if (textareaFocusState()) {

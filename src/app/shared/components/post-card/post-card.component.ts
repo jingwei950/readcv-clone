@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { AvatarComponent } from '../avatar/avatar.component';
 
 // Models
-import { EnrichedPost, Post } from '@models/post.model';
+import { EnrichedPost } from '@models/post.model';
 import { PostUser } from '@models/user.model';
 import { PostButtonObj } from '@models/nav-button.model';
 
@@ -18,14 +18,7 @@ import { heartIcon, repostIcon, commentIcon, bookmarkIcon, ellipsisIcon } from '
 // Spartan-ng imports
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
-import {
-  HlmMenuComponent,
-  HlmSubMenuComponent,
-  HlmMenuItemDirective,
-  HlmMenuGroupComponent,
-  HlmMenuItemIconDirective,
-  HlmMenuItemSubIndicatorComponent,
-} from '@spartan-ng/ui-menu-helm';
+import { HlmMenuComponent, HlmMenuItemDirective, HlmMenuGroupComponent } from '@spartan-ng/ui-menu-helm';
 import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
 
 @Component({

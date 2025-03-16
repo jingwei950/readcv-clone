@@ -12,7 +12,7 @@ import {
   Transaction,
   runTransaction,
 } from '@angular/fire/firestore';
-import { Observable, from, of, map, switchMap, catchError, combineLatest } from 'rxjs';
+import { Observable, of, map, switchMap, catchError, combineLatest } from 'rxjs';
 import { Profile, SocialConnections } from '@models/profile.model';
 import { User } from '@models/user.model';
 import { UserService } from './user.service';
@@ -115,26 +115,9 @@ export class ProfileService {
 
         // Create a complete enriched profile by combining user and profile data
         const enrichedProfile: EnrichedProfile = {
-          // Start with all user fields
-          uid: user.uid,
-          email: user.email,
-          avatarUrl: user.avatarUrl,
-          bio: user.bio,
-          joinDate: user.joinDate,
-          username: user.username,
-          name: user.name,
-          location: user.location,
-          pronouns: user.pronouns,
-
-          // Add profile-specific fields, which may override user fields if present
-          occupation: profile.occupation || '',
-          website: profile.website || '',
-
-          // Add social connection data
-          followerCount: social?.followerCount || 0,
-          followingCount: social?.followingCount || 0,
-
-          // Add posts (either the fetched posts or an empty array)
+          ...user,
+          ...profile,
+          ...social,
           posts: posts || [],
         };
 
@@ -295,6 +278,26 @@ export class ProfileService {
   }
 
   /**
+   * Get a user by username
+   * @param username Username to search for
+   * @returns Observable of User or null
+   */
+  getUserByUsername(username: string): Observable<User | null> {
+    if (!username) return of(null);
+
+    const usersCollection = collection(this.firestore, 'users');
+    const usersQuery = query(usersCollection, where('username', '==', username));
+
+    return collectionData(usersQuery, { idField: 'id' }).pipe(
+      map((users) => (users.length > 0 ? (users[0] as User) : null)),
+      catchError((error) => {
+        console.error('Error fetching user by username:', error);
+        return of(null);
+      }),
+    );
+  }
+
+  /**
    * Get profile by username
    * @param username Username to search for
    * @returns Observable of Profile or null
@@ -302,16 +305,10 @@ export class ProfileService {
   getProfileByUsername(username: string): Observable<Profile | null> {
     if (!username) return of(null);
 
-    const profileQuery = query(this.profileCollection, where('username', '==', username));
-
-    return from(getDocs(profileQuery)).pipe(
-      map((snapshot) => {
-        if (snapshot.empty) return null;
-        return snapshot.docs[0].data() as Profile;
-      }),
-      catchError((error) => {
-        console.error('Error fetching profile by username:', error);
-        return of(null);
+    return this.getUserByUsername(username).pipe(
+      switchMap((user) => {
+        if (!user) return of(null);
+        return this.getProfileByUid(user.uid);
       }),
     );
   }
@@ -322,10 +319,12 @@ export class ProfileService {
    * @returns Observable of EnrichedProfile or null
    */
   getEnrichedProfileByUsername(username: string): Observable<EnrichedProfile | null> {
-    return this.getProfileByUsername(username).pipe(
-      switchMap((profile) => {
-        if (!profile) return of(null);
-        return this.getEnrichedProfileByUid(profile.uid);
+    if (!username) return of(null);
+
+    return this.getUserByUsername(username).pipe(
+      switchMap((user) => {
+        if (!user) return of(null);
+        return this.getEnrichedProfileByUid(user.uid);
       }),
     );
   }

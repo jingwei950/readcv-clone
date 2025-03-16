@@ -7,16 +7,19 @@ import {
 import appleIcon from '@svg/apple-icon';
 import googleIcon from '@svg/google-icon';
 import { provideIcons } from '@ng-icons/core';
-import { lucideChevronRight, lucideHeart } from '@ng-icons/lucide';
 import { AuthService } from '@services/auth.service';
+import { UserService } from '@services/user.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { DarkModeService } from '@services/dark-mode.service';
+import { AuthFlowService } from '@services/auth-flow.service';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { lucideChevronRight, lucideHeart } from '@ng-icons/lucide';
 import { DialogStateService } from '@services/dialog-state.service';
-import { HlmDialogComponent, HlmDialogHeaderComponent, HlmDialogContentComponent } from '@spartan-ng/ui-dialog-helm';
-import { effect, inject, Component, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { effect, inject, Component, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { HlmDialogComponent, HlmDialogHeaderComponent, HlmDialogContentComponent } from '@spartan-ng/ui-dialog-helm';
 
 @Component({
   selector: 'App-job-listings',
@@ -59,7 +62,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
                   class="flex flex-col w-full transition-all ease-in-out duration-980 transform translate-x-0"
                 >
                   <hlm-dialog-header class="">
-                    <h3 brnDialogTitle hlm class="font-bold text-lg">Login to your account 👋</h3>
+                    <h3 brnDialogTitle hlm class="font-bold text-lg dark:text-grey1">Login to your account 👋</h3>
                     <p brnDialogDescription hlm>
                       By continuing you agree to our
                       <button hlmBtn variant="link" class="!p-0 h-auto">terms of service</button>
@@ -69,15 +72,21 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
                   </hlm-dialog-header>
 
                   <div class="flex flex-col gap-2 mt-4">
-                    <button hlmBtn (click)="googleAuth()">
+                    <button
+                      hlmBtn
+                      (click)="googleAuth()"
+                      class="dark:bg-foreground dark:text-grey2 font-semibold rounded-lg h-9"
+                    >
                       <img [src]="googleIcon.solid" alt="google icon" class="mr-2" />
-                      Conitnue with Google
+                      Continue with Google
                     </button>
-                    <button hlmBtn>
+                    <button hlmBtn class="dark:bg-foreground dark:text-grey2 font-semibold rounded-lg h-9">
                       <img [src]="appleIcon.solid" alt="apple icon" class="mr-2" />
-                      Conitnue with Apple
+                      Continue with Apple
                     </button>
-                    <button hlmBtn variant="link" (click)="changeSlide(slideNum())">Continue with Email</button>
+                    <button hlmBtn class="dark:text-grey2" variant="link" (click)="changeSlide(slideNum())">
+                      Continue with Email
+                    </button>
                   </div>
                 </div>
 
@@ -86,7 +95,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
                   class="absolute top-0 left-0 flex flex-col h-full transition-all ease-in-out duration-980 transform translate-x-full"
                 >
                   <hlm-dialog-header>
-                    <h3 brnDialogTitle hlm class="font-bold text-lg">Continue with an email link 💌</h3>
+                    <h3 brnDialogTitle hlm class="font-bold text-lg dark:text-grey1">Continue with an email link 💌</h3>
                     <p brnDialogDescription hlm>Enter your email and we'll send you a link to login to your account.</p>
                   </hlm-dialog-header>
 
@@ -97,21 +106,21 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
                         hlmInput
                         formControlName="email"
                         placeholder="Email address"
-                        class="!outline-none !ring-0 w-full"
+                        class="!outline-none !ring-0 w-full border-none dark:bg-foreground text-grey1"
                       />
                     </form>
                     <div class="flex justify-end">
                       <button
                         hlmBtn
                         variant="link"
-                        class="capitalize"
+                        class="capitalize h-8"
                         (click)="changeSlide(slideNum(), '', true, false)"
                       >
                         back
                       </button>
                       <button
                         hlmBtn
-                        class="capitalize"
+                        class="capitalize dark:bg-foreground dark:text-grey2 font-semibold rounded-lg h-8"
                         [disabled]="emailForm.invalid ? true : false"
                         (click)="changeSlide(slideNum(), emailForm.get('email')?.value, false, true)"
                       >
@@ -143,8 +152,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
               <button #closeDialog brnDialogClose class="hidden" (click)="triggerClick()">Close modal</button>
             </hlm-dialog-content>
           </hlm-dialog>
-
-          <button hlmBtn class="rounded-full w-full" (click)="authService.logout()">Logout</button>
         } @else {
           <div>
             <ng-icon hlm size="xl" name="lucideChevronRight" />
@@ -158,16 +165,20 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
           </button>
 
           <button hlmBtn (click)="toggleDarkMode()">Dark mode</button>
+
+          <button hlmBtn class="rounded-full w-full" (click)="authService.logout()">Logout</button>
         }
       </div>
     </div>
   `,
 })
 export class JobListingsComponent {
-  // Service
+  // Services
   authService = inject(AuthService);
+  authFlowService = inject(AuthFlowService);
   private formBuilder = inject(FormBuilder);
   darkModeService = inject(DarkModeService);
+  userService = inject(UserService);
   dialogStateService = inject(DialogStateService);
 
   toggleDarkMode = () => this.darkModeService.toggleDarkMode();
@@ -186,9 +197,11 @@ export class JobListingsComponent {
   appleIcon = appleIcon;
 
   // Shorthand services
-  currentUser = this.authService.auth_user;
   slideNum = this.dialogStateService.slideNum;
-  googleAuth = () => this.authService.googleAuth();
+  currentUser = toSignal(this.userService.current_user$);
+
+  // Auth methods
+  googleAuth = () => this.authFlowService.signInWithGoogle();
   sendEmailLinkAuth = (email: string) => {
     this.authService.sendEmailLinkAuth(email);
   };

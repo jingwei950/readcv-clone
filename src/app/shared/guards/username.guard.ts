@@ -11,13 +11,6 @@ export const usernameExistsGuard: CanActivateFn = (route: ActivatedRouteSnapshot
   const router = inject(Router);
   const profileService = inject(ProfileService);
 
-  console.log('===== USERNAME GUARD DEBUG =====');
-  console.log('Guard activated for URL:', state.url);
-  console.log('Route object:', route);
-  console.log('Route params:', route.params);
-  console.log('Route paramMap:', route.paramMap);
-  console.log('Route path:', route.routeConfig);
-
   // Try to get username from multiple possible sources
   // 1. Try from paramMap (primary method for AnalogJS)
   let username = route.paramMap.get('username');
@@ -25,7 +18,6 @@ export const usernameExistsGuard: CanActivateFn = (route: ActivatedRouteSnapshot
   // 2. If not found, try from params object
   if (!username && route.params['username']) {
     username = route.params['username'];
-    console.log('Found username in params object:', username);
   }
 
   // 3. If still not found, try to extract from URL (last resort)
@@ -34,11 +26,8 @@ export const usernameExistsGuard: CanActivateFn = (route: ActivatedRouteSnapshot
     if (urlParts.length > 0) {
       // If the URL is in the format /:username, the username should be the first part
       username = urlParts[0];
-      console.log('Extracted username from URL:', username);
     }
   }
-
-  console.log(`Username guard checking: ${username}`);
 
   if (!username) {
     console.warn('No username found in route params');
@@ -49,7 +38,6 @@ export const usernameExistsGuard: CanActivateFn = (route: ActivatedRouteSnapshot
   return profileService.getEnrichedProfileByUsername(username).pipe(
     map((profile) => {
       if (profile) {
-        console.log(`Username ${username} exists, allowing navigation`);
         return true;
       }
       console.warn(`Username ${username} does not exist, redirecting to home`);

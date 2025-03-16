@@ -1,5 +1,5 @@
 // Angular imports
-import { inject, signal, Component, viewChild, ChangeDetectionStrategy, model } from '@angular/core';
+import { inject, Component, viewChild, ChangeDetectionStrategy, model } from '@angular/core';
 import {
   BrnDialogComponent,
   BrnDialogContentDirective,
@@ -22,7 +22,6 @@ import { NavigationService } from '@services/navigation.service';
 import { BrnTooltipContentDirective } from '@spartan-ng/brain/tooltip';
 import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
 import { NavButtonsComponent } from '@components/nav-buttons/nav-buttons.component';
-import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.service';
 
 @Component({
   selector: 'App-navigation',
@@ -120,7 +119,6 @@ import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.ser
 export class NavigationComponent {
   public authService = inject(AuthService);
   public navService = inject(NavigationService);
-  public screenSize = inject(ResponsiveBreakpointService);
 
   navigationState = this.navService.navState;
   currentUser = this.authService.auth_user;

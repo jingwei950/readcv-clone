@@ -3,13 +3,12 @@ import { Timestamp } from '@angular/fire/firestore';
 export interface User {
   uid: string;
   name: string;
-  username: string;
+  username?: string;
   email: string;
-  avatarUrl: string;
-  pronouns: string;
-  bio: string;
-  location: string;
-  website: string;
+  avatarUrl?: string;
+  pronouns?: string;
+  bio?: string;
+  location?: string;
   joinDate: Timestamp;
 }
 

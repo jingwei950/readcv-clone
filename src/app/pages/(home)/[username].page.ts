@@ -2,7 +2,7 @@ import { switchMap, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ChangeDetectionStrategy, Component, inject, OnInit, computed, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, computed } from '@angular/core';
 import { ProfileService, EnrichedProfile } from '@services/profile.service';
 import { ProfileComponent } from '@components/profile/profile.component';
 import { RouteMeta } from '@analogjs/router';
@@ -39,12 +39,6 @@ export default class UsernameProfilePageComponent implements OnInit {
   // Current user
   currentUser = toSignal(this.userService.current_user$);
 
-  constructor() {
-    effect(() => {
-      console.log(this.profile());
-    });
-  }
-
   ngOnInit() {
     // Set navigation state to profile
     this.navigationService.updateNavState('profile');
@@ -56,7 +50,7 @@ export default class UsernameProfilePageComponent implements OnInit {
       switchMap((params) => {
         // Check for username from the new route format
         const username = params['username'];
-        console.log(username);
+        // console.log(username);
         if (username) {
           // If username is provided in the route, fetch by username
           return this.profileService.getEnrichedProfileByUsername(username);

@@ -1,4 +1,4 @@
-import { combineLatest, map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { combineLatest, map, Observable, of, switchMap, take } from 'rxjs';
 import {
   query,
   where,
@@ -45,7 +45,6 @@ export class FeedService {
 
       return combineLatest(postsWithUsers$);
     }),
-    tap((post) => console.log(post)),
     take(1),
   ) as Observable<EnrichedPost[]>;
 

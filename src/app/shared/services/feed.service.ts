@@ -1,4 +1,4 @@
-import { combineLatest, forkJoin, map, Observable, of, shareReplay, switchMap, take, tap, zip } from 'rxjs';
+import { combineLatest, map, Observable, of, switchMap, take, tap } from 'rxjs';
 import {
   query,
   where,
@@ -10,9 +10,7 @@ import {
   CollectionReference,
 } from '@angular/fire/firestore';
 import { EnrichedPost, Post } from '../models/post.model';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Injectable, inject, signal } from '@angular/core';
-import { User } from '@models/user.model';
+import { Injectable, inject } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -47,6 +45,7 @@ export class FeedService {
 
       return combineLatest(postsWithUsers$);
     }),
+    tap((post) => console.log(post)),
     take(1),
   ) as Observable<EnrichedPost[]>;
 

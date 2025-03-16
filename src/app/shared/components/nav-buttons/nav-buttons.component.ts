@@ -10,6 +10,7 @@ import { SvgIconComponent } from '@components/svg-icon/svg-icon.component';
 
 // Services
 import { NavigationService } from '@services/navigation.service';
+import { UserService } from '@services/user.service';
 
 // Spartan-ng imports
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
@@ -31,6 +32,8 @@ import { AuthService } from '@services/auth.service';
 import { imageIcon, plusIcon } from '@components/svg-icon/icons';
 import { AvatarComponent } from '@components/avatar/avatar.component';
 import { FormsModule } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+
 @Component({
   selector: 'App-nav-buttons',
   standalone: true,
@@ -81,7 +84,7 @@ import { FormsModule } from '@angular/forms';
           aria-describedby="profile"
           class="w-16 h-16 inline-flex items-center justify-center ml-auto"
           (click)="routeTo(icon().alias)"
-          [routerLink]="icon().path"
+          [routerLink]="appUser()?.username ? ['/', appUser()!.username] : ['/profile']"
         >
           <App-avatar
             buttonVariant="small"
@@ -111,8 +114,10 @@ import { FormsModule } from '@angular/forms';
 export class NavButtonsComponent {
   authService = inject(AuthService);
   navService = inject(NavigationService);
+  userService = inject(UserService);
 
   currentUser = this.authService.auth_user;
+  appUser = toSignal(this.userService.current_user$);
 
   iconType = input<string>();
   iconSelected = input<boolean>();

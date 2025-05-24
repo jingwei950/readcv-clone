@@ -16,7 +16,7 @@ import { ResponsiveBreakpointService } from '@services/responsive-breakpoint.ser
 import { FeedService } from '@services/feed.service';
 import { UserService } from '@services/user.service';
 import { NavigationService } from '@services/navigation.service';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { filter, map } from 'rxjs';
 
 @Component({
@@ -31,7 +31,6 @@ import { filter, map } from 'rxjs';
     PostCardComponent,
     PostComposerComponent,
     AsyncPipe,
-    NgClass,
   ],
   template: `
     <div class="w-full h-screen">

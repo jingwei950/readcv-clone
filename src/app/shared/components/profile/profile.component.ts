@@ -52,14 +52,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
           <!-- Show follower/following counts for profile owner -->
           <button
             hlmBtn
-            class="bg-foreground hover:bg-gray-800 dark:bg-foreground dark:text-grey1 w-full flex justify-center py-2.5 text-sm antialiased px-4 rounded-full transition-colors"
+            class="bg-foreground hover:bg-gray-800 dark:bg-foreground dark:text-grey1 w-full h-12 flex justify-center items-center py-2.5 text-sm antialiased px-4 rounded-full transition-colors"
             (click)="navigateToFollowers()"
           >
             <span>{{ profile()?.followerCount || 0 }} followers</span>
           </button>
           <button
             hlmBtn
-            class="bg-foreground hover:bg-gray-800 dark:bg-foreground dark:text-grey1 w-full flex justify-center py-2.5 text-sm antialiased px-4 rounded-full transition-colors"
+            class="bg-foreground hover:bg-gray-800 dark:bg-foreground dark:text-grey1 w-full h-12 flex justify-center py-2.5 text-sm antialiased px-4 rounded-full transition-colors"
             (click)="navigateToFollowing()"
           >
             <span>{{ profile()?.followingCount || 0 }} following</span>
@@ -97,6 +97,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
             </button>
           </div>
         }
+        <button
+          hlmBtn
+          class="!rounded-full bg-foreground dark:bg-foreground text-grey1 flex items-center justify-center w-12 h-12 flex-shrink-0 aspect-square overflow-hidden p-0"
+          (click)="navigateToEditProfile()"
+        >
+          <ng-icon hlm size="20px" name="lucidePencil" class="text-white" />
+        </button>
       </div>
 
       <!-- Tabs -->
